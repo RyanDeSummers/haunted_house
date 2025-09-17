@@ -1,0 +1,28 @@
+dependencies:
+  M5GFX:
+    dependencies: []
+    source:
+      path: C:\esp-idf-v5.3.3\projects\hot_potato\components\M5GFX
+      type: local
+    version: 0.1.15
+  espressif/led_strip:
+    component_hash: 223998f10cae6d81f2ad2dd3c1103c2221be298c708e37917482b0153f3ec64e
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 3.0.1~1
+  idf:
+    source:
+      type: idf
+    version: 5.3.3
+direct_dependencies:
+- espressif/led_strip
+- idf
+- lovyan03/M5GFX
+manifest_hash: 037caa5ac9e9dfd4b8577e4aaa07a9a7a6a5c7f5c3d37933364e27d8a296d003
+target: esp32
+version: 2.0.0

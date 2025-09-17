@@ -1,0 +1,2 @@
+source C:/esp-idf-v5.3.3/projects/haunted_house/build/gdbinit/symbols
+source C:/esp-idf-v5.3.3/projects/haunted_house/build/gdbinit/connect

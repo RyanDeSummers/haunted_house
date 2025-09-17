@@ -1,0 +1,159 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x17 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7176
+load:0x40078000,len:15644
+ho 0 tail 12 room 4
+load:0x40080400,len:4
+load:0x40080404,len:3904
+entry 0x40080640
+[0;32mI (31) boot: ESP-IDF v5.3.3-dirty 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Sep 13 2025 13:57:34[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (36) boot: chip revision: v3.1[0m
+[0;32mI (40) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (44) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (49) boot.esp32: SPI Flash Size : 2MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (59) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (70) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (77) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (85) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (92) boot: End of partition table[0m
+[0;32mI (96) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=12264h ( 74340) map[0m
+[0;32mI (130) esp_image: segment 1: paddr=0002228c vaddr=3ffb0000 size=02840h ( 10304) load[0m
+[0;32mI (134) esp_image: segment 2: paddr=00024ad4 vaddr=40080000 size=0b544h ( 46404) load[0m
+[0;32mI (154) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=32bfch (207868) map[0m
+[0;32mI (226) esp_image: segment 4: paddr=00062c24 vaddr=4008b544 size=05010h ( 20496) load[0m
+[0;32mI (242) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (242) boot: Disabling RNG early entropy source...[0m
+[0;32mI (255) cpu_start: Multicore app[0m
+[0;32mI (263) cpu_start: Pro cpu start user code[0m
+[0;32mI (263) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (263) app_init: Application information:[0m
+[0;32mI (266) app_init: Project name:     haunted_house[0m
+[0;32mI (271) app_init: App version:      1[0m
+[0;32mI (276) app_init: Compile time:     Sep 13 2025 13:56:39[0m
+[0;32mI (282) app_init: ELF file SHA256:  436a3ef82...[0m
+[0;32mI (287) app_init: ESP-IDF:          v5.3.3-dirty[0m
+[0;32mI (292) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (297) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (302) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (307) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (314) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (320) heap_init: At 3FFB35E0 len 0002CA20 (178 KiB): DRAM[0m
+[0;32mI (326) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (333) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (339) heap_init: At 40090554 len 0000FAAC (62 KiB): IRAM[0m
+[0;32mI (347) spi_flash: detected chip: generic[0m
+[0;32mI (350) spi_flash: flash io: dio[0m
+[0;33mW (354) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (368) main_task: Started on CPU0[0m
+[0;32mI (378) main_task: Calling app_main()[0m
+Starting IR Handler Test
+[0;32mI (378) gpio: GPIO[15]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+Running IR Handler Basic Test
+[0;32mI (388) IR_TEST: IR Basic Test Starting...[0m
+[0;32mI (418) M5GFX: [Autodetect] M5Stack[0m
+[0;32mI (558) IR_TEST: Display initialized[0m
+[0;32mI (558) IR_TEST: Self MAC: 34:98:7A:B5:96:E4[0m
+[0;32mI (558) IR_HANDLER: Initializing IR handler system...[0m
+[0;32mI (558) IR_HANDLER: Setting up RMT TX for IR on GPIO 26[0m
+[0;32mI (568) gpio: GPIO[26]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (578) IR_HANDLER: RMT TX setup completed successfully[0m
+[0;32mI (578) IR_HANDLER: Setting up UART RX for IR on GPIO 36[0m
+[0;32mI (588) IR_HANDLER: UART RX setup completed successfully on GPIO36 @ 2400-8N1[0m
+[0;32mI (598) IR_HANDLER: IR handler system initialized successfully[0m
+[0;32mI (598) IR_HANDLER: IR reception enabled[0m
+[0;32mI (608) IR_TEST: IR handler initialized successfully[0m
+[0;32mI (608) IR_TEST: IR TX GPIO: 26 (LED)[0m
+[0;32mI (618) IR_TEST: IR RX GPIO: 36 (Receiver)[0m
+[0;32mI (618) IR_TEST: IR UART: UART_NUM_2 @ 2400 bps[0m
+[0;32mI (668) IR_TEST: [0m
+[0;32mI (668) IR_TEST: 🎮 IR TEST INSTRUCTIONS:[0m
+[0;32mI (668) IR_TEST: ========================[0m
+[0;32mI (668) IR_TEST: 1. Power on multiple devices[0m
+[0;32mI (678) IR_TEST: 2. Point IR LED of one device at IR receiver of another[0m
+[0;32mI (678) IR_TEST: 3. Watch for TX/RX indicators on display and LED[0m
+[0;32mI (688) IR_TEST: 4. Green LED = TX (transmitting)[0m
+[0;32mI (698) IR_TEST: 5. Blue LED = RX (receiving)[0m
+[0;32mI (698) IR_TEST: 6. Red LED = Signal activity[0m
+[0;32mI (708) IR_TEST: [0m
+[0;32mI (888) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (888) IR_HANDLER: 5a 54 0b d1 02 34 98 7a b5 97 74 ab bc 48 c7 [0m
+[0;32mI (1338) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (1338) IR_HANDLER: 5a 54 0b d2 02 34 98 7a b5 97 74 ac bd 48 1c [0m
+[0;32mI (2328) IR_TEST: Round 4: Sent=0 Received=0[0m
+[0;32mI (2388) IR_HANDLER: IR packet transmitted (SEQ=40)[0m
+[0;32mI (2388) IR_TEST: TX: SEQ=40 OK[0m
+[0;32mI (2448) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (2448) IR_HANDLER: 5a 54 0b 28 00 34 98 7a b5 96 e4 aa bb 04 d5 [0m
+[0;32mI (2838) IR_HANDLER: IR packet transmitted (SEQ=41)[0m
+[0;32mI (2838) IR_TEST: TX: SEQ=41 OK[0m
+[0;32mI (2898) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (2898) IR_HANDLER: 5a 54 0b 29 00 34 98 7a b5 96 e4 ab bc 04 9c [0m
+[0;32mI (3288) IR_HANDLER: IR packet transmitted (SEQ=42)[0m
+[0;32mI (3288) IR_TEST: TX: SEQ=42 OK[0m
+[0;32mI (3348) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (3348) IR_HANDLER: 5a 54 0b 2a 00 34 98 7a b5 96 e4 ac bd 04 47 [0m
+[0;32mI (3958) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (3958) IR_HANDLER: 5a 54 0b f8 02 34 98 7a b5 97 74 aa bb 4c 0c [0m
+[0;32mI (4398) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (4398) IR_HANDLER: 5a 54 0b f9 02 34 98 7a b5 97 74 ab bc 4c 45 [0m
+[0;32mI (4848) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (4848) IR_HANDLER: 5a 54 0b fa 02 34 98 7a b5 97 74 ac bd 4c 9e [0m
+[0;32mI (5838) IR_TEST: Round 8: Sent=3 Received=0[0m
+[0;32mI (5898) IR_HANDLER: IR packet transmitted (SEQ=80)[0m
+[0;32mI (5898) IR_TEST: TX: SEQ=80 OK[0m
+[0;32mI (5958) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (5958) IR_HANDLER: 5a 54 0b 50 00 34 98 7a b5 96 e4 aa bb 08 62 [0m
+[0;32mI (6348) IR_HANDLER: IR packet transmitted (SEQ=81)[0m
+[0;32mI (6348) IR_TEST: TX: SEQ=81 OK[0m
+[0;32mI (6408) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (6408) IR_HANDLER: 5a 54 0b 51 00 34 98 7a b5 96 e4 ab bc 08 2b [0m
+[0;32mI (6798) IR_HANDLER: IR packet transmitted (SEQ=82)[0m
+[0;32mI (6798) IR_TEST: TX: SEQ=82 OK[0m
+[0;32mI (6858) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (6858) IR_HANDLER: 5a 54 0b 52 00 34 98 7a b5 96 e4 ac bd 08 f0 [0m
+[0;32mI (7468) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (7468) IR_HANDLER: 5a 54 0b 20 03 34 98 7a b5 97 74 aa bb 50 38 [0m
+[0;32mI (7908) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (7908) IR_HANDLER: 5a 54 0b 21 03 34 98 7a b5 97 74 ab bc 50 71 [0m
+[0;32mI (8358) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (8358) IR_HANDLER: 5a 54 0b 22 03 34 98 7a b5 97 74 ac bd 50 aa [0m
+[0;32mI (9348) IR_TEST: Round 12: Sent=6 Received=0[0m
+[0;32mI (9408) IR_HANDLER: IR packet transmitted (SEQ=120)[0m
+[0;32mI (9408) IR_TEST: TX: SEQ=120 OK[0m
+[0;32mI (9468) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (9468) IR_HANDLER: 5a 54 0b 78 00 34 98 7a b5 96 e4 aa bb 0c e0 [0m
+[0;32mI (9858) IR_HANDLER: IR packet transmitted (SEQ=121)[0m
+[0;32mI (9858) IR_TEST: TX: SEQ=121 OK[0m
+[0;32mI (9918) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (9918) IR_HANDLER: 5a 54 0b 79 00 34 98 7a b5 96 e4 ab bc 0c a9 [0m
+[0;32mI (10308) IR_HANDLER: IR packet transmitted (SEQ=122)[0m
+[0;32mI (10308) IR_TEST: TX: SEQ=122 OK[0m
+[0;32mI (10368) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (10368) IR_HANDLER: 5a 54 0b 7a 00 34 98 7a b5 96 e4 ac bd 0c 72 [0m
+[0;32mI (10968) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (10968) IR_HANDLER: 5a 54 0b 48 03 34 98 7a b5 97 74 aa bb 54 db [0m
+[0;32mI (11418) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (11418) IR_HANDLER: 5a 54 0b 49 03 34 98 7a b5 97 74 ab bc 54 92 [0m
+[0;32mI (11868) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (11868) IR_HANDLER: 5a 54 0b 4a 03 34 98 7a b5 97 74 ac bd 54 49 [0m
+[0;32mI (12858) IR_TEST: Round 16: Sent=9 Received=0[0m
+[0;32mI (12918) IR_HANDLER: IR packet transmitted (SEQ=160)[0m
+[0;32mI (12918) IR_TEST: TX: SEQ=160 OK[0m
+[0;32mI (12978) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (12978) IR_HANDLER: 5a 54 0b a0 00 34 98 7a b5 96 e4 aa bb 10 3d [0m
+[0;32mI (13368) IR_HANDLER: IR packet transmitted (SEQ=161)[0m
+[0;32mI (13368) IR_TEST: TX: SEQ=161 OK[0m
+[0;32mI (13428) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (13428) IR_HANDLER: 5a 54 0b a1 00 34 98 7a b5 96 e4 ab bc 10 74 [0m
+[0;32mI (13818) IR_HANDLER: IR packet transmitted (SEQ=162)[0m
+[0;32mI (13818) IR_TEST: TX: SEQ=162 OK[0m
+[0;32mI (13878) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (13878) IR_HANDLER: 5a 54 0b a2 00 34 98 7a b5 96 e4 ac bd 10 af [0m

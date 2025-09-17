@@ -1,0 +1,852 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x17 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7176
+load:0x40078000,len:15644
+ho 0 tail 12 room 4
+load:0x40080400,len:4
+load:0x40080404,len:3904
+entry 0x40080640
+[0;32mI (31) boot: ESP-IDF v5.3.3-dirty 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Sep 13 2025 13:57:34[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (36) boot: chip revision: v3.1[0m
+[0;32mI (40) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (44) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (49) boot.esp32: SPI Flash Size : 2MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (59) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (70) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (77) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (85) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (92) boot: End of partition table[0m
+[0;32mI (96) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=12454h ( 74836) map[0m
+[0;32mI (130) esp_image: segment 1: paddr=0002247c vaddr=3ffb0000 size=02840h ( 10304) load[0m
+[0;32mI (135) esp_image: segment 2: paddr=00024cc4 vaddr=40080000 size=0b354h ( 45908) load[0m
+[0;32mI (154) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=32d0ch (208140) map[0m
+[0;32mI (226) esp_image: segment 4: paddr=00062d34 vaddr=4008b354 size=05200h ( 20992) load[0m
+[0;32mI (242) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (243) boot: Disabling RNG early entropy source...[0m
+[0;32mI (255) cpu_start: Multicore app[0m
+[0;32mI (263) cpu_start: Pro cpu start user code[0m
+[0;32mI (263) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (263) app_init: Application information:[0m
+[0;32mI (266) app_init: Project name:     haunted_house[0m
+[0;32mI (272) app_init: App version:      1[0m
+[0;32mI (276) app_init: Compile time:     Sep 13 2025 13:56:39[0m
+[0;32mI (282) app_init: ELF file SHA256:  cfad1151f...[0m
+[0;32mI (287) app_init: ESP-IDF:          v5.3.3-dirty[0m
+[0;32mI (293) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (297) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (302) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (307) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (315) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (320) heap_init: At 3FFB35E0 len 0002CA20 (178 KiB): DRAM[0m
+[0;32mI (327) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (333) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (339) heap_init: At 40090554 len 0000FAAC (62 KiB): IRAM[0m
+[0;32mI (347) spi_flash: detected chip: generic[0m
+[0;32mI (350) spi_flash: flash io: dio[0m
+[0;33mW (354) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (369) main_task: Started on CPU0[0m
+[0;32mI (379) main_task: Calling app_main()[0m
+Starting IR Handler Test
+[0;32mI (379) gpio: GPIO[15]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+Running IR Handler Basic Test
+[0;32mI (389) IR_TEST: IR Basic Test Starting...[0m
+[0;32mI (419) M5GFX: [Autodetect] M5Stack[0m
+[0;32mI (559) IR_TEST: Display initialized[0m
+[0;32mI (559) IR_TEST: Self MAC: 34:98:7A:B5:96:E4[0m
+[0;32mI (559) IR_HANDLER: Initializing IR handler system...[0m
+[0;32mI (559) IR_HANDLER: Setting up RMT TX for IR on GPIO 26[0m
+[0;32mI (569) gpio: GPIO[26]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (579) IR_HANDLER: RMT TX setup completed successfully[0m
+[0;32mI (579) IR_HANDLER: Setting up UART RX for IR on GPIO 36[0m
+[0;32mI (589) IR_HANDLER: UART RX setup completed successfully on GPIO36 @ 2400-8N1[0m
+[0;32mI (599) IR_HANDLER: IR handler system initialized successfully[0m
+[0;32mI (599) IR_HANDLER: IR reception enabled[0m
+[0;32mI (609) IR_TEST: IR handler initialized successfully[0m
+[0;32mI (609) IR_TEST: IR TX GPIO: 26 (LED)[0m
+[0;32mI (619) IR_TEST: IR RX GPIO: 36 (Receiver)[0m
+[0;32mI (619) IR_TEST: IR UART: UART_NUM_2 @ 2400 bps[0m
+[0;32mI (669) IR_TEST: [0m
+[0;32mI (669) IR_TEST: 🎮 IR TEST INSTRUCTIONS:[0m
+[0;32mI (669) IR_TEST: ========================[0m
+[0;32mI (669) IR_TEST: 1. Power on multiple devices[0m
+[0;32mI (679) IR_TEST: 2. Point IR LED of one device at IR receiver of another[0m
+[0;32mI (679) IR_TEST: 3. Watch for TX/RX indicators on display and LED[0m
+[0;32mI (689) IR_TEST: 4. Green LED = TX (transmitting)[0m
+[0;32mI (699) IR_TEST: 5. Blue LED = RX (receiving)[0m
+[0;32mI (699) IR_TEST: 6. Red LED = Signal activity[0m
+[0;32mI (709) IR_TEST: [0m
+[0;32mI (749) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (749) IR_HANDLER: 5a 54 0b 30 0c 34 98 7a b5 97 74 aa bb 38 4e [0m
+[0;32mI (749) IR_HANDLER: Found preamble at index 0[0m
+[0;32mI (749) IR_HANDLER: Packet length: 11[0m
+[0;32mI (759) IR_HANDLER: Packet size check passed[0m
+[0;32mI (759) IR_HANDLER: Received CRC: 0x4E[0m
+[0;32mI (759) IR_HANDLER: 30 0c 34 98 7a b5 97 74 aa bb 38 [0m
+[0;32mI (769) IR_HANDLER: CRC validation: calculated=0x80, received=0x4E, match=NO[0m
+[0;32mI (779) IR_HANDLER: 0b 30 0c 34 98 7a b5 97 74 aa bb 38 [0m
+[0;33mW (779) IR_HANDLER: CRC validation failed[0m
+[0;32mI (1199) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (1199) IR_HANDLER: 5a 54 0b 31 0c 34 98 7a b5 97 74 ab bc 38 07 [0m
+[0;32mI (1199) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (1199) IR_HANDLER: Packet length: 11[0m
+[0;32mI (1209) IR_HANDLER: Packet size check passed[0m
+[0;32mI (1209) IR_HANDLER: Received CRC: 0x07[0m
+[0;32mI (1219) IR_HANDLER: 31 0c 34 98 7a b5 97 74 ab bc 38 [0m
+[0;32mI (1219) IR_HANDLER: CRC validation: calculated=0x8E, received=0x07, match=NO[0m
+[0;32mI (1229) IR_HANDLER: 0b 31 0c 34 98 7a b5 97 74 ab bc 38 [0m
+[0;33mW (1229) IR_HANDLER: CRC validation failed[0m
+[0;32mI (1649) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (1649) IR_HANDLER: 5a 54 0b 32 0c 34 98 7a b5 97 74 ac bd 38 dc [0m
+[0;32mI (1649) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (1649) IR_HANDLER: Packet length: 11[0m
+[0;32mI (1659) IR_HANDLER: Packet size check passed[0m
+[0;32mI (1659) IR_HANDLER: Received CRC: 0xDC[0m
+[0;32mI (1669) IR_HANDLER: 32 0c 34 98 7a b5 97 74 ac bd 38 [0m
+[0;32mI (1669) IR_HANDLER: CRC validation: calculated=0x82, received=0xDC, match=NO[0m
+[0;32mI (1679) IR_HANDLER: 0b 32 0c 34 98 7a b5 97 74 ac bd 38 [0m
+[0;33mW (1679) IR_HANDLER: CRC validation failed[0m
+[0;32mI (2359) IR_TEST: Round 4: Sent=0 Received=0[0m
+[0;32mI (2419) IR_HANDLER: IR packet transmitted (SEQ=40)[0m
+[0;32mI (2419) IR_TEST: TX: SEQ=40 OK[0m
+[0;32mI (2479) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (2479) IR_HANDLER: 5a 54 0b 28 00 34 98 7a b5 96 e4 aa bb 04 d5 [0m
+[0;32mI (2479) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (2479) IR_HANDLER: Packet length: 11[0m
+[0;32mI (2489) IR_HANDLER: Packet size check passed[0m
+[0;32mI (2489) IR_HANDLER: Received CRC: 0xD5[0m
+[0;32mI (2499) IR_HANDLER: 28 00 34 98 7a b5 96 e4 aa bb 04 [0m
+[0;32mI (2499) IR_HANDLER: CRC validation: calculated=0xD1, received=0xD5, match=NO[0m
+[0;32mI (2509) IR_HANDLER: 0b 28 00 34 98 7a b5 96 e4 aa bb 04 [0m
+[0;33mW (2509) IR_HANDLER: CRC validation failed[0m
+[0;32mI (2869) IR_HANDLER: IR packet transmitted (SEQ=41)[0m
+[0;32mI (2869) IR_TEST: TX: SEQ=41 OK[0m
+[0;32mI (2929) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (2929) IR_HANDLER: 5a 54 0b 29 00 34 98 7a b5 96 e4 ab bc 04 9c [0m
+[0;32mI (2929) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (2929) IR_HANDLER: Packet length: 11[0m
+[0;32mI (2939) IR_HANDLER: Packet size check passed[0m
+[0;32mI (2939) IR_HANDLER: Received CRC: 0x9C[0m
+[0;32mI (2949) IR_HANDLER: 29 00 34 98 7a b5 96 e4 ab bc 04 [0m
+[0;32mI (2949) IR_HANDLER: CRC validation: calculated=0xDF, received=0x9C, match=NO[0m
+[0;32mI (2959) IR_HANDLER: 0b 29 00 34 98 7a b5 96 e4 ab bc 04 [0m
+[0;33mW (2959) IR_HANDLER: CRC validation failed[0m
+[0;32mI (3319) IR_HANDLER: IR packet transmitted (SEQ=42)[0m
+[0;32mI (3319) IR_TEST: TX: SEQ=42 OK[0m
+[0;32mI (3379) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (3379) IR_HANDLER: 5a 54 0b 2a 00 34 98 7a b5 96 e4 ac bd 04 47 [0m
+[0;32mI (3379) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (3379) IR_HANDLER: Packet length: 11[0m
+[0;32mI (3389) IR_HANDLER: Packet size check passed[0m
+[0;32mI (3389) IR_HANDLER: Received CRC: 0x47[0m
+[0;32mI (3399) IR_HANDLER: 2a 00 34 98 7a b5 96 e4 ac bd 04 [0m
+[0;32mI (3399) IR_HANDLER: CRC validation: calculated=0xD3, received=0x47, match=NO[0m
+[0;32mI (3409) IR_HANDLER: 0b 2a 00 34 98 7a b5 96 e4 ac bd 04 [0m
+[0;33mW (3409) IR_HANDLER: CRC validation failed[0m
+[0;32mI (4259) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (4259) IR_HANDLER: 5a 54 0b 58 0c 34 98 7a b5 97 74 aa bb 3c ad [0m
+[0;32mI (4259) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (4259) IR_HANDLER: Packet length: 11[0m
+[0;32mI (4269) IR_HANDLER: Packet size check passed[0m
+[0;32mI (4269) IR_HANDLER: Received CRC: 0xAD[0m
+[0;32mI (4279) IR_HANDLER: 58 0c 34 98 7a b5 97 74 aa bb 3c [0m
+[0;32mI (4279) IR_HANDLER: CRC validation: calculated=0xD0, received=0xAD, match=NO[0m
+[0;32mI (4289) IR_HANDLER: 0b 58 0c 34 98 7a b5 97 74 aa bb 3c [0m
+[0;33mW (4289) IR_HANDLER: CRC validation failed[0m
+[0;32mI (4709) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (4709) IR_HANDLER: 5a 54 0b 59 0c 34 98 7a b5 97 74 ab bc 3c e4 [0m
+[0;32mI (4709) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (4709) IR_HANDLER: Packet length: 11[0m
+[0;32mI (4719) IR_HANDLER: Packet size check passed[0m
+[0;32mI (4719) IR_HANDLER: Received CRC: 0xE4[0m
+[0;32mI (4729) IR_HANDLER: 59 0c 34 98 7a b5 97 74 ab bc 3c [0m
+[0;32mI (4729) IR_HANDLER: CRC validation: calculated=0xDE, received=0xE4, match=NO[0m
+[0;32mI (4739) IR_HANDLER: 0b 59 0c 34 98 7a b5 97 74 ab bc 3c [0m
+[0;33mW (4739) IR_HANDLER: CRC validation failed[0m
+[0;32mI (5159) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (5159) IR_HANDLER: 5a 54 0b 5a 0c 34 98 7a b5 97 74 ac bd 3c 3f [0m
+[0;32mI (5159) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (5159) IR_HANDLER: Packet length: 11[0m
+[0;32mI (5169) IR_HANDLER: Packet size check passed[0m
+[0;32mI (5169) IR_HANDLER: Received CRC: 0x3F[0m
+[0;32mI (5179) IR_HANDLER: 5a 0c 34 98 7a b5 97 74 ac bd 3c [0m
+[0;32mI (5179) IR_HANDLER: CRC validation: calculated=0xD2, received=0x3F, match=NO[0m
+[0;32mI (5189) IR_HANDLER: 0b 5a 0c 34 98 7a b5 97 74 ac bd 3c [0m
+[0;33mW (5189) IR_HANDLER: CRC validation failed[0m
+[0;32mI (5869) IR_TEST: Round 8: Sent=3 Received=0[0m
+[0;32mI (5929) IR_HANDLER: IR packet transmitted (SEQ=80)[0m
+[0;32mI (5929) IR_TEST: TX: SEQ=80 OK[0m
+[0;32mI (5989) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (5989) IR_HANDLER: 5a 54 0b 50 00 34 98 7a b5 96 e4 aa bb 08 62 [0m
+[0;32mI (5989) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (5989) IR_HANDLER: Packet length: 11[0m
+[0;32mI (5999) IR_HANDLER: Packet size check passed[0m
+[0;32mI (5999) IR_HANDLER: Received CRC: 0x62[0m
+[0;32mI (6009) IR_HANDLER: 50 00 34 98 7a b5 96 e4 aa bb 08 [0m
+[0;32mI (6009) IR_HANDLER: CRC validation: calculated=0x47, received=0x62, match=NO[0m
+[0;32mI (6019) IR_HANDLER: 0b 50 00 34 98 7a b5 96 e4 aa bb 08 [0m
+[0;33mW (6019) IR_HANDLER: CRC validation failed[0m
+[0;32mI (6379) IR_HANDLER: IR packet transmitted (SEQ=81)[0m
+[0;32mI (6379) IR_TEST: TX: SEQ=81 OK[0m
+[0;32mI (6439) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (6439) IR_HANDLER: 5a 54 0b 51 00 34 98 7a b5 96 e4 ab bc 08 2b [0m
+[0;32mI (6439) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (6439) IR_HANDLER: Packet length: 11[0m
+[0;32mI (6449) IR_HANDLER: Packet size check passed[0m
+[0;32mI (6449) IR_HANDLER: Received CRC: 0x2B[0m
+[0;32mI (6459) IR_HANDLER: 51 00 34 98 7a b5 96 e4 ab bc 08 [0m
+[0;32mI (6459) IR_HANDLER: CRC validation: calculated=0x49, received=0x2B, match=NO[0m
+[0;32mI (6469) IR_HANDLER: 0b 51 00 34 98 7a b5 96 e4 ab bc 08 [0m
+[0;33mW (6469) IR_HANDLER: CRC validation failed[0m
+[0;32mI (6829) IR_HANDLER: IR packet transmitted (SEQ=82)[0m
+[0;32mI (6829) IR_TEST: TX: SEQ=82 OK[0m
+[0;32mI (6889) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (6889) IR_HANDLER: 5a 54 0b 52 00 34 98 7a b5 96 e4 ac bd 08 f0 [0m
+[0;32mI (6889) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (6889) IR_HANDLER: Packet length: 11[0m
+[0;32mI (6899) IR_HANDLER: Packet size check passed[0m
+[0;32mI (6899) IR_HANDLER: Received CRC: 0xF0[0m
+[0;32mI (6909) IR_HANDLER: 52 00 34 98 7a b5 96 e4 ac bd 08 [0m
+[0;32mI (6909) IR_HANDLER: CRC validation: calculated=0x45, received=0xF0, match=NO[0m
+[0;32mI (6919) IR_HANDLER: 0b 52 00 34 98 7a b5 96 e4 ac bd 08 [0m
+[0;33mW (6919) IR_HANDLER: CRC validation failed[0m
+[0;32mI (7769) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (7769) IR_HANDLER: 5a 54 0b 80 0c 34 98 7a b5 97 74 aa bb 40 70 [0m
+[0;32mI (7769) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (7769) IR_HANDLER: Packet length: 11[0m
+[0;32mI (7779) IR_HANDLER: Packet size check passed[0m
+[0;32mI (7779) IR_HANDLER: Received CRC: 0x70[0m
+[0;32mI (7789) IR_HANDLER: 80 0c 34 98 7a b5 97 74 aa bb 40 [0m
+[0;32mI (7789) IR_HANDLER: CRC validation: calculated=0xEB, received=0x70, match=NO[0m
+[0;32mI (7799) IR_HANDLER: 0b 80 0c 34 98 7a b5 97 74 aa bb 40 [0m
+[0;33mW (7799) IR_HANDLER: CRC validation failed[0m
+[0;32mI (8219) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (8219) IR_HANDLER: 5a 54 0b 81 0c 34 98 7a b5 97 74 ab bc 40 39 [0m
+[0;32mI (8219) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (8219) IR_HANDLER: Packet length: 11[0m
+[0;32mI (8229) IR_HANDLER: Packet size check passed[0m
+[0;32mI (8229) IR_HANDLER: Received CRC: 0x39[0m
+[0;32mI (8239) IR_HANDLER: 81 0c 34 98 7a b5 97 74 ab bc 40 [0m
+[0;32mI (8239) IR_HANDLER: CRC validation: calculated=0xE5, received=0x39, match=NO[0m
+[0;32mI (8249) IR_HANDLER: 0b 81 0c 34 98 7a b5 97 74 ab bc 40 [0m
+[0;33mW (8249) IR_HANDLER: CRC validation failed[0m
+[0;32mI (8669) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (8669) IR_HANDLER: 5a 54 0b 82 0c 34 98 7a b5 97 74 ac bd 40 e2 [0m
+[0;32mI (8669) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (8669) IR_HANDLER: Packet length: 11[0m
+[0;32mI (8679) IR_HANDLER: Packet size check passed[0m
+[0;32mI (8679) IR_HANDLER: Received CRC: 0xE2[0m
+[0;32mI (8689) IR_HANDLER: 82 0c 34 98 7a b5 97 74 ac bd 40 [0m
+[0;32mI (8689) IR_HANDLER: CRC validation: calculated=0xE9, received=0xE2, match=NO[0m
+[0;32mI (8699) IR_HANDLER: 0b 82 0c 34 98 7a b5 97 74 ac bd 40 [0m
+[0;33mW (8699) IR_HANDLER: CRC validation failed[0m
+[0;32mI (9379) IR_TEST: Round 12: Sent=6 Received=0[0m
+[0;32mI (9439) IR_HANDLER: IR packet transmitted (SEQ=120)[0m
+[0;32mI (9439) IR_TEST: TX: SEQ=120 OK[0m
+[0;32mI (9499) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (9499) IR_HANDLER: 5a 54 0b 78 00 34 98 7a b5 96 e4 aa bb 0c e0 [0m
+[0;32mI (9499) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (9499) IR_HANDLER: Packet length: 11[0m
+[0;32mI (9509) IR_HANDLER: Packet size check passed[0m
+[0;32mI (9509) IR_HANDLER: Received CRC: 0xE0[0m
+[0;32mI (9519) IR_HANDLER: 78 00 34 98 7a b5 96 e4 aa bb 0c [0m
+[0;32mI (9519) IR_HANDLER: CRC validation: calculated=0xDA, received=0xE0, match=NO[0m
+[0;32mI (9529) IR_HANDLER: 0b 78 00 34 98 7a b5 96 e4 aa bb 0c [0m
+[0;33mW (9529) IR_HANDLER: CRC validation failed[0m
+[0;32mI (9889) IR_HANDLER: IR packet transmitted (SEQ=121)[0m
+[0;32mI (9889) IR_TEST: TX: SEQ=121 OK[0m
+[0;32mI (9949) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (9949) IR_HANDLER: 5a 54 0b 79 00 34 98 7a b5 96 e4 ab bc 0c a9 [0m
+[0;32mI (9949) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (9949) IR_HANDLER: Packet length: 11[0m
+[0;32mI (9959) IR_HANDLER: Packet size check passed[0m
+[0;32mI (9959) IR_HANDLER: Received CRC: 0xA9[0m
+[0;32mI (9969) IR_HANDLER: 79 00 34 98 7a b5 96 e4 ab bc 0c [0m
+[0;32mI (9969) IR_HANDLER: CRC validation: calculated=0xD4, received=0xA9, match=NO[0m
+[0;32mI (9979) IR_HANDLER: 0b 79 00 34 98 7a b5 96 e4 ab bc 0c [0m
+[0;33mW (9979) IR_HANDLER: CRC validation failed[0m
+[0;32mI (10339) IR_HANDLER: IR packet transmitted (SEQ=122)[0m
+[0;32mI (10339) IR_TEST: TX: SEQ=122 OK[0m
+[0;32mI (10399) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (10399) IR_HANDLER: 5a 54 0b 7a 00 34 98 7a b5 96 e4 ac bd 0c 72 [0m
+[0;32mI (10399) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (10399) IR_HANDLER: Packet length: 11[0m
+[0;32mI (10409) IR_HANDLER: Packet size check passed[0m
+[0;32mI (10409) IR_HANDLER: Received CRC: 0x72[0m
+[0;32mI (10419) IR_HANDLER: 7a 00 34 98 7a b5 96 e4 ac bd 0c [0m
+[0;32mI (10419) IR_HANDLER: CRC validation: calculated=0xD8, received=0x72, match=NO[0m
+[0;32mI (10429) IR_HANDLER: 0b 7a 00 34 98 7a b5 96 e4 ac bd 0c [0m
+[0;33mW (10439) IR_HANDLER: CRC validation failed[0m
+[0;32mI (11279) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (11279) IR_HANDLER: 5a 54 0b a8 0c 34 98 7a b5 97 74 aa bb 44 f2 [0m
+[0;32mI (11279) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (11279) IR_HANDLER: Packet length: 11[0m
+[0;32mI (11289) IR_HANDLER: Packet size check passed[0m
+[0;32mI (11289) IR_HANDLER: Received CRC: 0xF2[0m
+[0;32mI (11299) IR_HANDLER: a8 0c 34 98 7a b5 97 74 aa bb 44 [0m
+[0;32mI (11299) IR_HANDLER: CRC validation: calculated=0x76, received=0xF2, match=NO[0m
+[0;32mI (11309) IR_HANDLER: 0b a8 0c 34 98 7a b5 97 74 aa bb 44 [0m
+[0;33mW (11319) IR_HANDLER: CRC validation failed[0m
+[0;32mI (11729) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (11729) IR_HANDLER: 5a 54 0b a9 0c 34 98 7a b5 97 74 ab bc 44 bb [0m
+[0;32mI (11729) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (11729) IR_HANDLER: Packet length: 11[0m
+[0;32mI (11739) IR_HANDLER: Packet size check passed[0m
+[0;32mI (11739) IR_HANDLER: Received CRC: 0xBB[0m
+[0;32mI (11749) IR_HANDLER: a9 0c 34 98 7a b5 97 74 ab bc 44 [0m
+[0;32mI (11749) IR_HANDLER: CRC validation: calculated=0x78, received=0xBB, match=NO[0m
+[0;32mI (11759) IR_HANDLER: 0b a9 0c 34 98 7a b5 97 74 ab bc 44 [0m
+[0;33mW (11769) IR_HANDLER: CRC validation failed[0m
+[0;32mI (12179) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (12179) IR_HANDLER: 5a 54 0b aa 0c 34 98 7a b5 97 74 ac bd 44 60 [0m
+[0;32mI (12179) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (12179) IR_HANDLER: Packet length: 11[0m
+[0;32mI (12189) IR_HANDLER: Packet size check passed[0m
+[0;32mI (12189) IR_HANDLER: Received CRC: 0x60[0m
+[0;32mI (12199) IR_HANDLER: aa 0c 34 98 7a b5 97 74 ac bd 44 [0m
+[0;32mI (12199) IR_HANDLER: CRC validation: calculated=0x74, received=0x60, match=NO[0m
+[0;32mI (12209) IR_HANDLER: 0b aa 0c 34 98 7a b5 97 74 ac bd 44 [0m
+[0;33mW (12219) IR_HANDLER: CRC validation failed[0m
+[0;32mI (12889) IR_TEST: Round 16: Sent=9 Received=0[0m
+[0;32mI (12949) IR_HANDLER: IR packet transmitted (SEQ=160)[0m
+[0;32mI (12949) IR_TEST: TX: SEQ=160 OK[0m
+[0;32mI (13009) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (13009) IR_HANDLER: 5a 54 0b a0 00 34 98 7a b5 96 e4 aa bb 10 3d [0m
+[0;32mI (13009) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (13009) IR_HANDLER: Packet length: 11[0m
+[0;32mI (13019) IR_HANDLER: Packet size check passed[0m
+[0;32mI (13019) IR_HANDLER: Received CRC: 0x3D[0m
+[0;32mI (13029) IR_HANDLER: a0 00 34 98 7a b5 96 e4 aa bb 10 [0m
+[0;32mI (13029) IR_HANDLER: CRC validation: calculated=0x5A, received=0x3D, match=NO[0m
+[0;32mI (13039) IR_HANDLER: 0b a0 00 34 98 7a b5 96 e4 aa bb 10 [0m
+[0;33mW (13049) IR_HANDLER: CRC validation failed[0m
+[0;32mI (13399) IR_HANDLER: IR packet transmitted (SEQ=161)[0m
+[0;32mI (13399) IR_TEST: TX: SEQ=161 OK[0m
+[0;32mI (13459) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (13459) IR_HANDLER: 5a 54 0b a1 00 34 98 7a b5 96 e4 ab bc 10 74 [0m
+[0;32mI (13459) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (13459) IR_HANDLER: Packet length: 11[0m
+[0;32mI (13469) IR_HANDLER: Packet size check passed[0m
+[0;32mI (13469) IR_HANDLER: Received CRC: 0x74[0m
+[0;32mI (13479) IR_HANDLER: a1 00 34 98 7a b5 96 e4 ab bc 10 [0m
+[0;32mI (13479) IR_HANDLER: CRC validation: calculated=0x54, received=0x74, match=NO[0m
+[0;32mI (13489) IR_HANDLER: 0b a1 00 34 98 7a b5 96 e4 ab bc 10 [0m
+[0;33mW (13499) IR_HANDLER: CRC validation failed[0m
+[0;32mI (13849) IR_HANDLER: IR packet transmitted (SEQ=162)[0m
+[0;32mI (13849) IR_TEST: TX: SEQ=162 OK[0m
+[0;32mI (13909) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (13909) IR_HANDLER: 5a 54 0b a2 00 34 98 7a b5 96 e4 ac bd 10 af [0m
+[0;32mI (13909) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (13909) IR_HANDLER: Packet length: 11[0m
+[0;32mI (13919) IR_HANDLER: Packet size check passed[0m
+[0;32mI (13919) IR_HANDLER: Received CRC: 0xAF[0m
+[0;32mI (13929) IR_HANDLER: a2 00 34 98 7a b5 96 e4 ac bd 10 [0m
+[0;32mI (13929) IR_HANDLER: CRC validation: calculated=0x58, received=0xAF, match=NO[0m
+[0;32mI (13939) IR_HANDLER: 0b a2 00 34 98 7a b5 96 e4 ac bd 10 [0m
+[0;33mW (13949) IR_HANDLER: CRC validation failed[0m
+[0;32mI (14789) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (14789) IR_HANDLER: 5a 54 0b d0 0c 34 98 7a b5 97 74 aa bb 48 45 [0m
+[0;32mI (14789) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (14789) IR_HANDLER: Packet length: 11[0m
+[0;32mI (14799) IR_HANDLER: Packet size check passed[0m
+[0;32mI (14799) IR_HANDLER: Received CRC: 0x45[0m
+[0;32mI (14809) IR_HANDLER: d0 0c 34 98 7a b5 97 74 aa bb 48 [0m
+[0;32mI (14809) IR_HANDLER: CRC validation: calculated=0xE0, received=0x45, match=NO[0m
+[0;32mI (14819) IR_HANDLER: 0b d0 0c 34 98 7a b5 97 74 aa bb 48 [0m
+[0;33mW (14829) IR_HANDLER: CRC validation failed[0m
+[0;32mI (15239) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (15239) IR_HANDLER: 5a 54 0b d1 0c 34 98 7a b5 97 74 ab bc 48 0c [0m
+[0;32mI (15239) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (15239) IR_HANDLER: Packet length: 11[0m
+[0;32mI (15249) IR_HANDLER: Packet size check passed[0m
+[0;32mI (15249) IR_HANDLER: Received CRC: 0x0C[0m
+[0;32mI (15259) IR_HANDLER: d1 0c 34 98 7a b5 97 74 ab bc 48 [0m
+[0;32mI (15259) IR_HANDLER: CRC validation: calculated=0xEE, received=0x0C, match=NO[0m
+[0;32mI (15269) IR_HANDLER: 0b d1 0c 34 98 7a b5 97 74 ab bc 48 [0m
+[0;33mW (15279) IR_HANDLER: CRC validation failed[0m
+[0;32mI (15689) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (15689) IR_HANDLER: 5a 54 0b d2 0c 34 98 7a b5 97 74 ac bd 48 d7 [0m
+[0;32mI (15689) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (15689) IR_HANDLER: Packet length: 11[0m
+[0;32mI (15699) IR_HANDLER: Packet size check passed[0m
+[0;32mI (15699) IR_HANDLER: Received CRC: 0xD7[0m
+[0;32mI (15709) IR_HANDLER: d2 0c 34 98 7a b5 97 74 ac bd 48 [0m
+[0;32mI (15709) IR_HANDLER: CRC validation: calculated=0xE2, received=0xD7, match=NO[0m
+[0;32mI (15719) IR_HANDLER: 0b d2 0c 34 98 7a b5 97 74 ac bd 48 [0m
+[0;33mW (15729) IR_HANDLER: CRC validation failed[0m
+[0;32mI (16399) IR_TEST: Round 20: Sent=12 Received=0[0m
+[0;32mI (16459) IR_HANDLER: IR packet transmitted (SEQ=200)[0m
+[0;32mI (16459) IR_TEST: TX: SEQ=200 OK[0m
+[0;32mI (16519) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (16519) IR_HANDLER: 5a 54 0b c8 00 34 98 7a b5 96 e4 aa bb 14 de [0m
+[0;32mI (16519) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (16519) IR_HANDLER: Packet length: 11[0m
+[0;32mI (16529) IR_HANDLER: Packet size check passed[0m
+[0;32mI (16529) IR_HANDLER: Received CRC: 0xDE[0m
+[0;32mI (16539) IR_HANDLER: c8 00 34 98 7a b5 96 e4 aa bb 14 [0m
+[0;32mI (16539) IR_HANDLER: CRC validation: calculated=0x0A, received=0xDE, match=NO[0m
+[0;32mI (16549) IR_HANDLER: 0b c8 00 34 98 7a b5 96 e4 aa bb 14 [0m
+[0;33mW (16559) IR_HANDLER: CRC validation failed[0m
+[0;32mI (16909) IR_HANDLER: IR packet transmitted (SEQ=201)[0m
+[0;32mI (16909) IR_TEST: TX: SEQ=201 OK[0m
+[0;32mI (16969) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (16969) IR_HANDLER: 5a 54 0b c9 00 34 98 7a b5 96 e4 ab bc 14 97 [0m
+[0;32mI (16969) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (16969) IR_HANDLER: Packet length: 11[0m
+[0;32mI (16979) IR_HANDLER: Packet size check passed[0m
+[0;32mI (16979) IR_HANDLER: Received CRC: 0x97[0m
+[0;32mI (16989) IR_HANDLER: c9 00 34 98 7a b5 96 e4 ab bc 14 [0m
+[0;32mI (16989) IR_HANDLER: CRC validation: calculated=0x04, received=0x97, match=NO[0m
+[0;32mI (16999) IR_HANDLER: 0b c9 00 34 98 7a b5 96 e4 ab bc 14 [0m
+[0;33mW (17009) IR_HANDLER: CRC validation failed[0m
+[0;32mI (17359) IR_HANDLER: IR packet transmitted (SEQ=202)[0m
+[0;32mI (17359) IR_TEST: TX: SEQ=202 OK[0m
+[0;32mI (17419) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (17419) IR_HANDLER: 5a 54 0b ca 00 34 98 7a b5 96 e4 ac bd 14 4c [0m
+[0;32mI (17419) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (17419) IR_HANDLER: Packet length: 11[0m
+[0;32mI (17429) IR_HANDLER: Packet size check passed[0m
+[0;32mI (17429) IR_HANDLER: Received CRC: 0x4C[0m
+[0;32mI (17439) IR_HANDLER: ca 00 34 98 7a b5 96 e4 ac bd 14 [0m
+[0;32mI (17439) IR_HANDLER: CRC validation: calculated=0x08, received=0x4C, match=NO[0m
+[0;32mI (17449) IR_HANDLER: 0b ca 00 34 98 7a b5 96 e4 ac bd 14 [0m
+[0;33mW (17459) IR_HANDLER: CRC validation failed[0m
+[0;32mI (18299) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (18299) IR_HANDLER: 5a 54 0b f8 0c 34 98 7a b5 97 74 aa bb 4c c7 [0m
+[0;32mI (18299) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (18299) IR_HANDLER: Packet length: 11[0m
+[0;32mI (18309) IR_HANDLER: Packet size check passed[0m
+[0;32mI (18309) IR_HANDLER: Received CRC: 0xC7[0m
+[0;32mI (18319) IR_HANDLER: f8 0c 34 98 7a b5 97 74 aa bb 4c [0m
+[0;32mI (18319) IR_HANDLER: CRC validation: calculated=0x7D, received=0xC7, match=NO[0m
+[0;32mI (18329) IR_HANDLER: 0b f8 0c 34 98 7a b5 97 74 aa bb 4c [0m
+[0;33mW (18339) IR_HANDLER: CRC validation failed[0m
+[0;32mI (18749) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (18749) IR_HANDLER: 5a 54 0b f9 0c 34 98 7a b5 97 74 ab bc 4c 8e [0m
+[0;32mI (18749) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (18749) IR_HANDLER: Packet length: 11[0m
+[0;32mI (18759) IR_HANDLER: Packet size check passed[0m
+[0;32mI (18759) IR_HANDLER: Received CRC: 0x8E[0m
+[0;32mI (18769) IR_HANDLER: f9 0c 34 98 7a b5 97 74 ab bc 4c [0m
+[0;32mI (18769) IR_HANDLER: CRC validation: calculated=0x73, received=0x8E, match=NO[0m
+[0;32mI (18779) IR_HANDLER: 0b f9 0c 34 98 7a b5 97 74 ab bc 4c [0m
+[0;33mW (18789) IR_HANDLER: CRC validation failed[0m
+[0;32mI (19199) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (19199) IR_HANDLER: 5a 54 0b fa 0c 34 98 7a b5 97 74 ac bd 4c 55 [0m
+[0;32mI (19199) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (19199) IR_HANDLER: Packet length: 11[0m
+[0;32mI (19209) IR_HANDLER: Packet size check passed[0m
+[0;32mI (19209) IR_HANDLER: Received CRC: 0x55[0m
+[0;32mI (19219) IR_HANDLER: fa 0c 34 98 7a b5 97 74 ac bd 4c [0m
+[0;32mI (19219) IR_HANDLER: CRC validation: calculated=0x7F, received=0x55, match=NO[0m
+[0;32mI (19229) IR_HANDLER: 0b fa 0c 34 98 7a b5 97 74 ac bd 4c [0m
+[0;33mW (19239) IR_HANDLER: CRC validation failed[0m
+[0;32mI (19919) IR_TEST: Round 24: Sent=15 Received=0[0m
+[0;32mI (19979) IR_HANDLER: IR packet transmitted (SEQ=240)[0m
+[0;32mI (19979) IR_TEST: TX: SEQ=240 OK[0m
+[0;32mI (20039) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (20039) IR_HANDLER: 5a 54 0b f0 00 34 98 7a b5 96 e4 aa bb 18 08 [0m
+[0;32mI (20039) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (20039) IR_HANDLER: Packet length: 11[0m
+[0;32mI (20049) IR_HANDLER: Packet size check passed[0m
+[0;32mI (20049) IR_HANDLER: Received CRC: 0x08[0m
+[0;32mI (20059) IR_HANDLER: f0 00 34 98 7a b5 96 e4 aa bb 18 [0m
+[0;32mI (20059) IR_HANDLER: CRC validation: calculated=0x51, received=0x08, match=NO[0m
+[0;32mI (20069) IR_HANDLER: 0b f0 00 34 98 7a b5 96 e4 aa bb 18 [0m
+[0;33mW (20079) IR_HANDLER: CRC validation failed[0m
+[0;32mI (20429) IR_HANDLER: IR packet transmitted (SEQ=241)[0m
+[0;32mI (20429) IR_TEST: TX: SEQ=241 OK[0m
+[0;32mI (20489) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (20489) IR_HANDLER: 5a 54 0b f1 00 34 98 7a b5 96 e4 ab bc 18 41 [0m
+[0;32mI (20489) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (20489) IR_HANDLER: Packet length: 11[0m
+[0;32mI (20499) IR_HANDLER: Packet size check passed[0m
+[0;32mI (20499) IR_HANDLER: Received CRC: 0x41[0m
+[0;32mI (20509) IR_HANDLER: f1 00 34 98 7a b5 96 e4 ab bc 18 [0m
+[0;32mI (20509) IR_HANDLER: CRC validation: calculated=0x5F, received=0x41, match=NO[0m
+[0;32mI (20519) IR_HANDLER: 0b f1 00 34 98 7a b5 96 e4 ab bc 18 [0m
+[0;33mW (20529) IR_HANDLER: CRC validation failed[0m
+[0;32mI (20879) IR_HANDLER: IR packet transmitted (SEQ=242)[0m
+[0;32mI (20879) IR_TEST: TX: SEQ=242 OK[0m
+[0;32mI (20939) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (20939) IR_HANDLER: 5a 54 0b f2 00 34 98 7a b5 96 e4 ac bd 18 9a [0m
+[0;32mI (20939) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (20939) IR_HANDLER: Packet length: 11[0m
+[0;32mI (20949) IR_HANDLER: Packet size check passed[0m
+[0;32mI (20949) IR_HANDLER: Received CRC: 0x9A[0m
+[0;32mI (20959) IR_HANDLER: f2 00 34 98 7a b5 96 e4 ac bd 18 [0m
+[0;32mI (20959) IR_HANDLER: CRC validation: calculated=0x53, received=0x9A, match=NO[0m
+[0;32mI (20969) IR_HANDLER: 0b f2 00 34 98 7a b5 96 e4 ac bd 18 [0m
+[0;33mW (20979) IR_HANDLER: CRC validation failed[0m
+[0;32mI (21809) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (21809) IR_HANDLER: 5a 54 0b 20 0d 34 98 7a b5 97 74 aa bb 50 f3 [0m
+[0;32mI (21809) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (21809) IR_HANDLER: Packet length: 11[0m
+[0;32mI (21819) IR_HANDLER: Packet size check passed[0m
+[0;32mI (21819) IR_HANDLER: Received CRC: 0xF3[0m
+[0;32mI (21829) IR_HANDLER: 20 0d 34 98 7a b5 97 74 aa bb 50 [0m
+[0;32mI (21829) IR_HANDLER: CRC validation: calculated=0xB7, received=0xF3, match=NO[0m
+[0;32mI (21839) IR_HANDLER: 0b 20 0d 34 98 7a b5 97 74 aa bb 50 [0m
+[0;33mW (21849) IR_HANDLER: CRC validation failed[0m
+[0;32mI (22259) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (22259) IR_HANDLER: 5a 54 0b 21 0d 34 98 7a b5 97 74 ab bc 50 ba [0m
+[0;32mI (22259) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (22259) IR_HANDLER: Packet length: 11[0m
+[0;32mI (22269) IR_HANDLER: Packet size check passed[0m
+[0;32mI (22269) IR_HANDLER: Received CRC: 0xBA[0m
+[0;32mI (22279) IR_HANDLER: 21 0d 34 98 7a b5 97 74 ab bc 50 [0m
+[0;32mI (22279) IR_HANDLER: CRC validation: calculated=0xB9, received=0xBA, match=NO[0m
+[0;32mI (22289) IR_HANDLER: 0b 21 0d 34 98 7a b5 97 74 ab bc 50 [0m
+[0;33mW (22299) IR_HANDLER: CRC validation failed[0m
+[0;32mI (22709) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (22709) IR_HANDLER: 5a 54 0b 22 0d 34 98 7a b5 97 74 ac bd 50 61 [0m
+[0;32mI (22709) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (22709) IR_HANDLER: Packet length: 11[0m
+[0;32mI (22719) IR_HANDLER: Packet size check passed[0m
+[0;32mI (22719) IR_HANDLER: Received CRC: 0x61[0m
+[0;32mI (22729) IR_HANDLER: 22 0d 34 98 7a b5 97 74 ac bd 50 [0m
+[0;32mI (22729) IR_HANDLER: CRC validation: calculated=0xB5, received=0x61, match=NO[0m
+[0;32mI (22739) IR_HANDLER: 0b 22 0d 34 98 7a b5 97 74 ac bd 50 [0m
+[0;33mW (22749) IR_HANDLER: CRC validation failed[0m
+[0;32mI (23479) IR_TEST: Round 28: Sent=18 Received=0[0m
+[0;32mI (23539) IR_HANDLER: IR packet transmitted (SEQ=280)[0m
+[0;32mI (23539) IR_TEST: TX: SEQ=280 OK[0m
+[0;32mI (23599) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (23599) IR_HANDLER: 5a 54 0b 18 01 34 98 7a b5 96 e4 aa bb 1c c0 [0m
+[0;32mI (23599) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (23599) IR_HANDLER: Packet length: 11[0m
+[0;32mI (23609) IR_HANDLER: Packet size check passed[0m
+[0;32mI (23609) IR_HANDLER: Received CRC: 0xC0[0m
+[0;32mI (23619) IR_HANDLER: 18 01 34 98 7a b5 96 e4 aa bb 1c [0m
+[0;32mI (23619) IR_HANDLER: CRC validation: calculated=0xE0, received=0xC0, match=NO[0m
+[0;32mI (23629) IR_HANDLER: 0b 18 01 34 98 7a b5 96 e4 aa bb 1c [0m
+[0;33mW (23639) IR_HANDLER: CRC validation failed[0m
+[0;32mI (23989) IR_HANDLER: IR packet transmitted (SEQ=281)[0m
+[0;32mI (23989) IR_TEST: TX: SEQ=281 OK[0m
+[0;32mI (24049) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (24049) IR_HANDLER: 5a 54 0b 19 01 34 98 7a b5 96 e4 ab bc 1c 89 [0m
+[0;32mI (24049) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (24049) IR_HANDLER: Packet length: 11[0m
+[0;32mI (24059) IR_HANDLER: Packet size check passed[0m
+[0;32mI (24059) IR_HANDLER: Received CRC: 0x89[0m
+[0;32mI (24069) IR_HANDLER: 19 01 34 98 7a b5 96 e4 ab bc 1c [0m
+[0;32mI (24069) IR_HANDLER: CRC validation: calculated=0xEE, received=0x89, match=NO[0m
+[0;32mI (24079) IR_HANDLER: 0b 19 01 34 98 7a b5 96 e4 ab bc 1c [0m
+[0;33mW (24089) IR_HANDLER: CRC validation failed[0m
+[0;32mI (24439) IR_HANDLER: IR packet transmitted (SEQ=282)[0m
+[0;32mI (24439) IR_TEST: TX: SEQ=282 OK[0m
+[0;32mI (24499) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (24499) IR_HANDLER: 5a 54 0b 1a 01 34 98 7a b5 96 e4 ac bd 1c 52 [0m
+[0;32mI (24499) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (24499) IR_HANDLER: Packet length: 11[0m
+[0;32mI (24509) IR_HANDLER: Packet size check passed[0m
+[0;32mI (24509) IR_HANDLER: Received CRC: 0x52[0m
+[0;32mI (24519) IR_HANDLER: 1a 01 34 98 7a b5 96 e4 ac bd 1c [0m
+[0;32mI (24519) IR_HANDLER: CRC validation: calculated=0xE2, received=0x52, match=NO[0m
+[0;32mI (24529) IR_HANDLER: 0b 1a 01 34 98 7a b5 96 e4 ac bd 1c [0m
+[0;33mW (24539) IR_HANDLER: CRC validation failed[0m
+[0;32mI (25319) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (25319) IR_HANDLER: 5a 54 0b 48 0d 34 98 7a b5 97 74 aa bb 54 10 [0m
+[0;32mI (25319) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (25319) IR_HANDLER: Packet length: 11[0m
+[0;32mI (25329) IR_HANDLER: Packet size check passed[0m
+[0;32mI (25329) IR_HANDLER: Received CRC: 0x10[0m
+[0;32mI (25339) IR_HANDLER: 48 0d 34 98 7a b5 97 74 aa bb 54 [0m
+[0;32mI (25339) IR_HANDLER: CRC validation: calculated=0xE7, received=0x10, match=NO[0m
+[0;32mI (25349) IR_HANDLER: 0b 48 0d 34 98 7a b5 97 74 aa bb 54 [0m
+[0;33mW (25359) IR_HANDLER: CRC validation failed[0m
+[0;32mI (25769) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (25769) IR_HANDLER: 5a 54 0b 49 0d 34 98 7a b5 97 74 ab bc 54 59 [0m
+[0;32mI (25769) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (25769) IR_HANDLER: Packet length: 11[0m
+[0;32mI (25779) IR_HANDLER: Packet size check passed[0m
+[0;32mI (25779) IR_HANDLER: Received CRC: 0x59[0m
+[0;32mI (25789) IR_HANDLER: 49 0d 34 98 7a b5 97 74 ab bc 54 [0m
+[0;32mI (25789) IR_HANDLER: CRC validation: calculated=0xE9, received=0x59, match=NO[0m
+[0;32mI (25799) IR_HANDLER: 0b 49 0d 34 98 7a b5 97 74 ab bc 54 [0m
+[0;33mW (25809) IR_HANDLER: CRC validation failed[0m
+[0;32mI (26219) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (26219) IR_HANDLER: 5a 54 0b 4a 0d 34 98 7a b5 97 74 ac bd 54 82 [0m
+[0;32mI (26219) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (26219) IR_HANDLER: Packet length: 11[0m
+[0;32mI (26229) IR_HANDLER: Packet size check passed[0m
+[0;32mI (26229) IR_HANDLER: Received CRC: 0x82[0m
+[0;32mI (26239) IR_HANDLER: 4a 0d 34 98 7a b5 97 74 ac bd 54 [0m
+[0;32mI (26239) IR_HANDLER: CRC validation: calculated=0xE5, received=0x82, match=NO[0m
+[0;32mI (26249) IR_HANDLER: 0b 4a 0d 34 98 7a b5 97 74 ac bd 54 [0m
+[0;33mW (26259) IR_HANDLER: CRC validation failed[0m
+[0;32mI (27029) IR_TEST: Round 32: Sent=21 Received=0[0m
+[0;32mI (27089) IR_HANDLER: IR packet transmitted (SEQ=320)[0m
+[0;32mI (27089) IR_TEST: TX: SEQ=320 OK[0m
+[0;32mI (27149) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (27149) IR_HANDLER: 5a 54 0b 40 01 34 98 7a b5 96 e4 aa bb 20 df [0m
+[0;32mI (27149) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (27149) IR_HANDLER: Packet length: 11[0m
+[0;32mI (27159) IR_HANDLER: Packet size check passed[0m
+[0;32mI (27159) IR_HANDLER: Received CRC: 0xDF[0m
+[0;32mI (27169) IR_HANDLER: 40 01 34 98 7a b5 96 e4 aa bb 20 [0m
+[0;32mI (27169) IR_HANDLER: CRC validation: calculated=0x4D, received=0xDF, match=NO[0m
+[0;32mI (27179) IR_HANDLER: 0b 40 01 34 98 7a b5 96 e4 aa bb 20 [0m
+[0;33mW (27189) IR_HANDLER: CRC validation failed[0m
+[0;32mI (27539) IR_HANDLER: IR packet transmitted (SEQ=321)[0m
+[0;32mI (27539) IR_TEST: TX: SEQ=321 OK[0m
+[0;32mI (27599) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (27599) IR_HANDLER: 5a 54 0b 41 01 34 98 7a b5 96 e4 ab bc 20 96 [0m
+[0;32mI (27599) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (27599) IR_HANDLER: Packet length: 11[0m
+[0;32mI (27609) IR_HANDLER: Packet size check passed[0m
+[0;32mI (27609) IR_HANDLER: Received CRC: 0x96[0m
+[0;32mI (27619) IR_HANDLER: 41 01 34 98 7a b5 96 e4 ab bc 20 [0m
+[0;32mI (27619) IR_HANDLER: CRC validation: calculated=0x43, received=0x96, match=NO[0m
+[0;32mI (27629) IR_HANDLER: 0b 41 01 34 98 7a b5 96 e4 ab bc 20 [0m
+[0;33mW (27639) IR_HANDLER: CRC validation failed[0m
+[0;32mI (27989) IR_HANDLER: IR packet transmitted (SEQ=322)[0m
+[0;32mI (27989) IR_TEST: TX: SEQ=322 OK[0m
+[0;32mI (28049) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (28049) IR_HANDLER: 5a 54 0b 42 01 34 98 7a b5 96 e4 ac bd 20 4d [0m
+[0;32mI (28049) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (28049) IR_HANDLER: Packet length: 11[0m
+[0;32mI (28059) IR_HANDLER: Packet size check passed[0m
+[0;32mI (28059) IR_HANDLER: Received CRC: 0x4D[0m
+[0;32mI (28069) IR_HANDLER: 42 01 34 98 7a b5 96 e4 ac bd 20 [0m
+[0;32mI (28069) IR_HANDLER: CRC validation: calculated=0x4F, received=0x4D, match=NO[0m
+[0;32mI (28079) IR_HANDLER: 0b 42 01 34 98 7a b5 96 e4 ac bd 20 [0m
+[0;33mW (28089) IR_HANDLER: CRC validation failed[0m
+[0;32mI (28829) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (28829) IR_HANDLER: 5a 54 0b 70 0d 34 98 7a b5 97 74 aa bb 58 c6 [0m
+[0;32mI (28829) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (28829) IR_HANDLER: Packet length: 11[0m
+[0;32mI (28839) IR_HANDLER: Packet size check passed[0m
+[0;32mI (28839) IR_HANDLER: Received CRC: 0xC6[0m
+[0;32mI (28849) IR_HANDLER: 70 0d 34 98 7a b5 97 74 aa bb 58 [0m
+[0;32mI (28849) IR_HANDLER: CRC validation: calculated=0xBC, received=0xC6, match=NO[0m
+[0;32mI (28859) IR_HANDLER: 0b 70 0d 34 98 7a b5 97 74 aa bb 58 [0m
+[0;33mW (28869) IR_HANDLER: CRC validation failed[0m
+[0;32mI (29279) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (29279) IR_HANDLER: 5a 54 0b 71 0d 34 98 7a b5 97 74 ab bc 58 8f [0m
+[0;32mI (29279) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (29279) IR_HANDLER: Packet length: 11[0m
+[0;32mI (29289) IR_HANDLER: Packet size check passed[0m
+[0;32mI (29289) IR_HANDLER: Received CRC: 0x8F[0m
+[0;32mI (29299) IR_HANDLER: 71 0d 34 98 7a b5 97 74 ab bc 58 [0m
+[0;32mI (29299) IR_HANDLER: CRC validation: calculated=0xB2, received=0x8F, match=NO[0m
+[0;32mI (29309) IR_HANDLER: 0b 71 0d 34 98 7a b5 97 74 ab bc 58 [0m
+[0;33mW (29319) IR_HANDLER: CRC validation failed[0m
+[0;32mI (29729) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (29729) IR_HANDLER: 5a 54 0b 72 0d 34 98 7a b5 97 74 ac bd 58 54 [0m
+[0;32mI (29729) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (29729) IR_HANDLER: Packet length: 11[0m
+[0;32mI (29739) IR_HANDLER: Packet size check passed[0m
+[0;32mI (29739) IR_HANDLER: Received CRC: 0x54[0m
+[0;32mI (29749) IR_HANDLER: 72 0d 34 98 7a b5 97 74 ac bd 58 [0m
+[0;32mI (29749) IR_HANDLER: CRC validation: calculated=0xBE, received=0x54, match=NO[0m
+[0;32mI (29759) IR_HANDLER: 0b 72 0d 34 98 7a b5 97 74 ac bd 58 [0m
+[0;33mW (29769) IR_HANDLER: CRC validation failed[0m
+[0;32mI (30539) IR_TEST: Round 36: Sent=24 Received=0[0m
+[0;32mI (30599) IR_HANDLER: IR packet transmitted (SEQ=360)[0m
+[0;32mI (30599) IR_TEST: TX: SEQ=360 OK[0m
+[0;32mI (30659) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (30659) IR_HANDLER: 5a 54 0b 68 01 34 98 7a b5 96 e4 aa bb 24 5d [0m
+[0;32mI (30659) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (30659) IR_HANDLER: Packet length: 11[0m
+[0;32mI (30669) IR_HANDLER: Packet size check passed[0m
+[0;32mI (30669) IR_HANDLER: Received CRC: 0x5D[0m
+[0;32mI (30679) IR_HANDLER: 68 01 34 98 7a b5 96 e4 aa bb 24 [0m
+[0;32mI (30679) IR_HANDLER: CRC validation: calculated=0xD0, received=0x5D, match=NO[0m
+[0;32mI (30689) IR_HANDLER: 0b 68 01 34 98 7a b5 96 e4 aa bb 24 [0m
+[0;33mW (30699) IR_HANDLER: CRC validation failed[0m
+[0;32mI (31049) IR_HANDLER: IR packet transmitted (SEQ=361)[0m
+[0;32mI (31049) IR_TEST: TX: SEQ=361 OK[0m
+[0;32mI (31109) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (31109) IR_HANDLER: 5a 54 0b 69 01 34 98 7a b5 96 e4 ab bc 24 14 [0m
+[0;32mI (31109) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (31109) IR_HANDLER: Packet length: 11[0m
+[0;32mI (31119) IR_HANDLER: Packet size check passed[0m
+[0;32mI (31119) IR_HANDLER: Received CRC: 0x14[0m
+[0;32mI (31129) IR_HANDLER: 69 01 34 98 7a b5 96 e4 ab bc 24 [0m
+[0;32mI (31129) IR_HANDLER: CRC validation: calculated=0xDE, received=0x14, match=NO[0m
+[0;32mI (31139) IR_HANDLER: 0b 69 01 34 98 7a b5 96 e4 ab bc 24 [0m
+[0;33mW (31149) IR_HANDLER: CRC validation failed[0m
+[0;32mI (31499) IR_HANDLER: IR packet transmitted (SEQ=362)[0m
+[0;32mI (31499) IR_TEST: TX: SEQ=362 OK[0m
+[0;32mI (31559) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (31559) IR_HANDLER: 5a 54 0b 6a 01 34 98 7a b5 96 e4 ac bd 24 cf [0m
+[0;32mI (31559) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (31559) IR_HANDLER: Packet length: 11[0m
+[0;32mI (31569) IR_HANDLER: Packet size check passed[0m
+[0;32mI (31569) IR_HANDLER: Received CRC: 0xCF[0m
+[0;32mI (31579) IR_HANDLER: 6a 01 34 98 7a b5 96 e4 ac bd 24 [0m
+[0;32mI (31579) IR_HANDLER: CRC validation: calculated=0xD2, received=0xCF, match=NO[0m
+[0;32mI (31589) IR_HANDLER: 0b 6a 01 34 98 7a b5 96 e4 ac bd 24 [0m
+[0;33mW (31599) IR_HANDLER: CRC validation failed[0m
+[0;32mI (32339) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (32339) IR_HANDLER: 5a 54 0b 98 0d 34 98 7a b5 97 74 aa bb 5c e7 [0m
+[0;32mI (32339) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (32339) IR_HANDLER: Packet length: 11[0m
+[0;32mI (32349) IR_HANDLER: Packet size check passed[0m
+[0;32mI (32349) IR_HANDLER: Received CRC: 0xE7[0m
+[0;32mI (32359) IR_HANDLER: 98 0d 34 98 7a b5 97 74 aa bb 5c [0m
+[0;32mI (32359) IR_HANDLER: CRC validation: calculated=0x47, received=0xE7, match=NO[0m
+[0;32mI (32369) IR_HANDLER: 0b 98 0d 34 98 7a b5 97 74 aa bb 5c [0m
+[0;33mW (32379) IR_HANDLER: CRC validation failed[0m
+[0;32mI (32789) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (32789) IR_HANDLER: 5a 54 0b 99 0d 34 98 7a b5 97 74 ab bc 5c ae [0m
+[0;32mI (32789) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (32789) IR_HANDLER: Packet length: 11[0m
+[0;32mI (32799) IR_HANDLER: Packet size check passed[0m
+[0;32mI (32799) IR_HANDLER: Received CRC: 0xAE[0m
+[0;32mI (32809) IR_HANDLER: 99 0d 34 98 7a b5 97 74 ab bc 5c [0m
+[0;32mI (32809) IR_HANDLER: CRC validation: calculated=0x49, received=0xAE, match=NO[0m
+[0;32mI (32819) IR_HANDLER: 0b 99 0d 34 98 7a b5 97 74 ab bc 5c [0m
+[0;33mW (32829) IR_HANDLER: CRC validation failed[0m
+[0;32mI (33239) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (33239) IR_HANDLER: 5a 54 0b 9a 0d 34 98 7a b5 97 74 ac bd 5c 75 [0m
+[0;32mI (33239) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (33239) IR_HANDLER: Packet length: 11[0m
+[0;32mI (33249) IR_HANDLER: Packet size check passed[0m
+[0;32mI (33249) IR_HANDLER: Received CRC: 0x75[0m
+[0;32mI (33259) IR_HANDLER: 9a 0d 34 98 7a b5 97 74 ac bd 5c [0m
+[0;32mI (33259) IR_HANDLER: CRC validation: calculated=0x45, received=0x75, match=NO[0m
+[0;32mI (33269) IR_HANDLER: 0b 9a 0d 34 98 7a b5 97 74 ac bd 5c [0m
+[0;33mW (33279) IR_HANDLER: CRC validation failed[0m
+[0;32mI (34049) IR_TEST: Round 40: Sent=27 Received=0[0m
+[0;32mI (34109) IR_HANDLER: IR packet transmitted (SEQ=400)[0m
+[0;32mI (34109) IR_TEST: TX: SEQ=400 OK[0m
+[0;32mI (34169) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (34169) IR_HANDLER: 5a 54 0b 90 01 34 98 7a b5 96 e4 aa bb 28 28 [0m
+[0;32mI (34169) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (34169) IR_HANDLER: Packet length: 11[0m
+[0;32mI (34179) IR_HANDLER: Packet size check passed[0m
+[0;32mI (34179) IR_HANDLER: Received CRC: 0x28[0m
+[0;32mI (34189) IR_HANDLER: 90 01 34 98 7a b5 96 e4 aa bb 28 [0m
+[0;32mI (34189) IR_HANDLER: CRC validation: calculated=0xED, received=0x28, match=NO[0m
+[0;32mI (34199) IR_HANDLER: 0b 90 01 34 98 7a b5 96 e4 aa bb 28 [0m
+[0;33mW (34209) IR_HANDLER: CRC validation failed[0m
+[0;32mI (34559) IR_HANDLER: IR packet transmitted (SEQ=401)[0m
+[0;32mI (34559) IR_TEST: TX: SEQ=401 OK[0m
+[0;32mI (34619) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (34619) IR_HANDLER: 5a 54 0b 91 01 34 98 7a b5 96 e4 ab bc 28 61 [0m
+[0;32mI (34619) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (34619) IR_HANDLER: Packet length: 11[0m
+[0;32mI (34629) IR_HANDLER: Packet size check passed[0m
+[0;32mI (34629) IR_HANDLER: Received CRC: 0x61[0m
+[0;32mI (34639) IR_HANDLER: 91 01 34 98 7a b5 96 e4 ab bc 28 [0m
+[0;32mI (34639) IR_HANDLER: CRC validation: calculated=0xE3, received=0x61, match=NO[0m
+[0;32mI (34649) IR_HANDLER: 0b 91 01 34 98 7a b5 96 e4 ab bc 28 [0m
+[0;33mW (34659) IR_HANDLER: CRC validation failed[0m
+[0;32mI (35009) IR_HANDLER: IR packet transmitted (SEQ=402)[0m
+[0;32mI (35009) IR_TEST: TX: SEQ=402 OK[0m
+[0;32mI (35069) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (35069) IR_HANDLER: 5a 54 0b 92 01 34 98 7a b5 96 e4 ac bd 28 ba [0m
+[0;32mI (35069) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (35069) IR_HANDLER: Packet length: 11[0m
+[0;32mI (35079) IR_HANDLER: Packet size check passed[0m
+[0;32mI (35079) IR_HANDLER: Received CRC: 0xBA[0m
+[0;32mI (35089) IR_HANDLER: 92 01 34 98 7a b5 96 e4 ac bd 28 [0m
+[0;32mI (35089) IR_HANDLER: CRC validation: calculated=0xEF, received=0xBA, match=NO[0m
+[0;32mI (35099) IR_HANDLER: 0b 92 01 34 98 7a b5 96 e4 ac bd 28 [0m
+[0;33mW (35109) IR_HANDLER: CRC validation failed[0m
+[0;32mI (35849) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (35849) IR_HANDLER: 5a 54 0b c0 0d 34 98 7a b5 97 74 aa bb 60 f8 [0m
+[0;32mI (35849) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (35849) IR_HANDLER: Packet length: 11[0m
+[0;32mI (35859) IR_HANDLER: Packet size check passed[0m
+[0;32mI (35859) IR_HANDLER: Received CRC: 0xF8[0m
+[0;32mI (35869) IR_HANDLER: c0 0d 34 98 7a b5 97 74 aa bb 60 [0m
+[0;32mI (35869) IR_HANDLER: CRC validation: calculated=0xEA, received=0xF8, match=NO[0m
+[0;32mI (35879) IR_HANDLER: 0b c0 0d 34 98 7a b5 97 74 aa bb 60 [0m
+[0;33mW (35889) IR_HANDLER: CRC validation failed[0m
+[0;32mI (36299) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (36299) IR_HANDLER: 5a 54 0b c1 0d 34 98 7a b5 97 74 ab bc 60 b1 [0m
+[0;32mI (36299) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (36299) IR_HANDLER: Packet length: 11[0m
+[0;32mI (36309) IR_HANDLER: Packet size check passed[0m
+[0;32mI (36309) IR_HANDLER: Received CRC: 0xB1[0m
+[0;32mI (36319) IR_HANDLER: c1 0d 34 98 7a b5 97 74 ab bc 60 [0m
+[0;32mI (36319) IR_HANDLER: CRC validation: calculated=0xE4, received=0xB1, match=NO[0m
+[0;32mI (36329) IR_HANDLER: 0b c1 0d 34 98 7a b5 97 74 ab bc 60 [0m
+[0;33mW (36339) IR_HANDLER: CRC validation failed[0m
+[0;32mI (36749) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (36749) IR_HANDLER: 5a 54 0b c2 0d 34 98 7a b5 97 74 ac bd 60 6a [0m
+[0;32mI (36749) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (36749) IR_HANDLER: Packet length: 11[0m
+[0;32mI (36759) IR_HANDLER: Packet size check passed[0m
+[0;32mI (36759) IR_HANDLER: Received CRC: 0x6A[0m
+[0;32mI (36769) IR_HANDLER: c2 0d 34 98 7a b5 97 74 ac bd 60 [0m
+[0;32mI (36769) IR_HANDLER: CRC validation: calculated=0xE8, received=0x6A, match=NO[0m
+[0;32mI (36779) IR_HANDLER: 0b c2 0d 34 98 7a b5 97 74 ac bd 60 [0m
+[0;33mW (36789) IR_HANDLER: CRC validation failed[0m
+[0;32mI (37559) IR_TEST: Round 44: Sent=30 Received=0[0m
+[0;32mI (37619) IR_HANDLER: IR packet transmitted (SEQ=440)[0m
+[0;32mI (37619) IR_TEST: TX: SEQ=440 OK[0m
+[0;32mI (37679) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (37679) IR_HANDLER: 5a 54 0b b8 01 34 98 7a b5 96 e4 aa bb 2c aa [0m
+[0;32mI (37679) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (37679) IR_HANDLER: Packet length: 11[0m
+[0;32mI (37689) IR_HANDLER: Packet size check passed[0m
+[0;32mI (37689) IR_HANDLER: Received CRC: 0xAA[0m
+[0;32mI (37699) IR_HANDLER: b8 01 34 98 7a b5 96 e4 aa bb 2c [0m
+[0;32mI (37699) IR_HANDLER: CRC validation: calculated=0x70, received=0xAA, match=NO[0m
+[0;32mI (37709) IR_HANDLER: 0b b8 01 34 98 7a b5 96 e4 aa bb 2c [0m
+[0;33mW (37719) IR_HANDLER: CRC validation failed[0m
+[0;32mI (38069) IR_HANDLER: IR packet transmitted (SEQ=441)[0m
+[0;32mI (38069) IR_TEST: TX: SEQ=441 OK[0m
+[0;32mI (38129) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (38129) IR_HANDLER: 5a 54 0b b9 01 34 98 7a b5 96 e4 ab bc 2c e3 [0m
+[0;32mI (38129) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (38129) IR_HANDLER: Packet length: 11[0m
+[0;32mI (38139) IR_HANDLER: Packet size check passed[0m
+[0;32mI (38139) IR_HANDLER: Received CRC: 0xE3[0m
+[0;32mI (38149) IR_HANDLER: b9 01 34 98 7a b5 96 e4 ab bc 2c [0m
+[0;32mI (38149) IR_HANDLER: CRC validation: calculated=0x7E, received=0xE3, match=NO[0m
+[0;32mI (38159) IR_HANDLER: 0b b9 01 34 98 7a b5 96 e4 ab bc 2c [0m
+[0;33mW (38169) IR_HANDLER: CRC validation failed[0m
+[0;32mI (38519) IR_HANDLER: IR packet transmitted (SEQ=442)[0m
+[0;32mI (38519) IR_TEST: TX: SEQ=442 OK[0m
+[0;32mI (38579) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (38579) IR_HANDLER: 5a 54 0b ba 01 34 98 7a b5 96 e4 ac bd 2c 38 [0m
+[0;32mI (38579) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (38579) IR_HANDLER: Packet length: 11[0m
+[0;32mI (38589) IR_HANDLER: Packet size check passed[0m
+[0;32mI (38589) IR_HANDLER: Received CRC: 0x38[0m
+[0;32mI (38599) IR_HANDLER: ba 01 34 98 7a b5 96 e4 ac bd 2c [0m
+[0;32mI (38599) IR_HANDLER: CRC validation: calculated=0x72, received=0x38, match=NO[0m
+[0;32mI (38609) IR_HANDLER: 0b ba 01 34 98 7a b5 96 e4 ac bd 2c [0m
+[0;33mW (38619) IR_HANDLER: CRC validation failed[0m
+[0;32mI (39359) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (39359) IR_HANDLER: 5a 54 0b e8 0d 34 98 7a b5 97 74 aa bb 64 7a [0m
+[0;32mI (39359) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (39359) IR_HANDLER: Packet length: 11[0m
+[0;32mI (39369) IR_HANDLER: Packet size check passed[0m
+[0;32mI (39369) IR_HANDLER: Received CRC: 0x7A[0m
+[0;32mI (39379) IR_HANDLER: e8 0d 34 98 7a b5 97 74 aa bb 64 [0m
+[0;32mI (39379) IR_HANDLER: CRC validation: calculated=0x77, received=0x7A, match=NO[0m
+[0;32mI (39389) IR_HANDLER: 0b e8 0d 34 98 7a b5 97 74 aa bb 64 [0m
+[0;33mW (39399) IR_HANDLER: CRC validation failed[0m
+[0;32mI (39809) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (39809) IR_HANDLER: 5a 54 0b e9 0d 34 98 7a b5 97 74 ab bc 64 33 [0m
+[0;32mI (39809) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (39809) IR_HANDLER: Packet length: 11[0m
+[0;32mI (39819) IR_HANDLER: Packet size check passed[0m
+[0;32mI (39819) IR_HANDLER: Received CRC: 0x33[0m
+[0;32mI (39829) IR_HANDLER: e9 0d 34 98 7a b5 97 74 ab bc 64 [0m
+[0;32mI (39829) IR_HANDLER: CRC validation: calculated=0x79, received=0x33, match=NO[0m
+[0;32mI (39839) IR_HANDLER: 0b e9 0d 34 98 7a b5 97 74 ab bc 64 [0m
+[0;33mW (39849) IR_HANDLER: CRC validation failed[0m
+[0;32mI (40259) IR_HANDLER: UART RX: 15 bytes received[0m
+[0;32mI (40259) IR_HANDLER: 5a 54 0b ea 0d 34 98 7a b5 97 74 ac bd 64 e8 [0m
+[0;32mI (40259) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (40259) IR_HANDLER: Packet length: 11[0m
+[0;32mI (40269) IR_HANDLER: Packet size check passed[0m
+[0;32mI (40269) IR_HANDLER: Received CRC: 0xE8[0m
+[0;32mI (40279) IR_HANDLER: ea 0d 34 98 7a b5 97 74 ac bd 64 [0m
+[0;32mI (40279) IR_HANDLER: CRC validation: calculated=0x75, received=0xE8, match=NO[0m
+[0;32mI (40289) IR_HANDLER: 0b ea 0d 34 98 7a b5 97 74 ac bd 64 [0m
+[0;33mW (40299) IR_HANDLER: CRC validation failed[0m

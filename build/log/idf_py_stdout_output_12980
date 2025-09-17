@@ -1,0 +1,546 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x17 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7176
+load:0x40078000,len:15644
+ho 0 tail 12 room 4
+load:0x40080400,len:4
+load:0x40080404,len:3904
+entry 0x40080640
+[0;32mI (31) boot: ESP-IDF v5.3.3-dirty 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Sep 13 2025 13:57:34[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (36) boot: chip revision: v3.1[0m
+[0;32mI (40) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (44) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (49) boot.esp32: SPI Flash Size : 2MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (59) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (70) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (77) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (85) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (92) boot: End of partition table[0m
+[0;32mI (96) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=13570h ( 79216) map[0m
+[0;32mI (132) esp_image: segment 1: paddr=00023598 vaddr=3ffb0000 size=02880h ( 10368) load[0m
+[0;32mI (136) esp_image: segment 2: paddr=00025e20 vaddr=40080000 size=0a1f8h ( 41464) load[0m
+[0;32mI (154) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=34c9ch (216220) map[0m
+[0;32mI (228) esp_image: segment 4: paddr=00064cc4 vaddr=4008a1f8 size=06a9ch ( 27292) load[0m
+[0;32mI (248) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (248) boot: Disabling RNG early entropy source...[0m
+[0;32mI (260) cpu_start: Multicore app[0m
+[0;32mI (269) cpu_start: Pro cpu start user code[0m
+[0;32mI (269) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (269) app_init: Application information:[0m
+[0;32mI (272) app_init: Project name:     haunted_house[0m
+[0;32mI (277) app_init: App version:      1[0m
+[0;32mI (281) app_init: Compile time:     Sep 13 2025 13:56:39[0m
+[0;32mI (287) app_init: ELF file SHA256:  612ad6ff2...[0m
+[0;32mI (293) app_init: ESP-IDF:          v5.3.3-dirty[0m
+[0;32mI (298) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (303) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (308) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (313) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (320) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (326) heap_init: At 3FFB3680 len 0002C980 (178 KiB): DRAM[0m
+[0;32mI (332) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (338) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (345) heap_init: At 40090C94 len 0000F36C (60 KiB): IRAM[0m
+[0;32mI (352) spi_flash: detected chip: generic[0m
+[0;32mI (355) spi_flash: flash io: dio[0m
+[0;33mW (359) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;33mW (373) i2c: This driver is an old driver, please migrate your application code to adapt `driver/i2c_master.h`[0m
+[0;32mI (385) main_task: Started on CPU0[0m
+[0;32mI (395) main_task: Calling app_main()[0m
+Haunted House Project - Actor/Guest IR Test
+Testing IR radiation communication between devices
+[0;32mI (395) gpio: GPIO[15]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (435) M5GFX: [Autodetect] M5Stack[0m
+Display initialized
+Starting Actor/Guest Test...
+[0;32mI (575) ACTOR_GUEST_TEST: 🧪 ACTOR/GUEST TEST[0m
+[0;32mI (575) ACTOR_GUEST_TEST: ==================[0m
+[0;32mI (575) ACTOR_GUEST_TEST: Display initialized[0m
+[0;32mI (585) gpio: GPIO[37]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (585) gpio: GPIO[39]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (595) ACTOR_GUEST_TEST: Initializing Movement Handler...[0m
+[0;32mI (605) MOVEMENT_HANDLER: Initializing movement handler...[0m
+[0;32mI (615) MOVEMENT_HANDLER: MPU6886 WHO_AM_I: 0x19[0m
+[0;32mI (715) MOVEMENT_HANDLER: Movement handler initialized successfully[0m
+[0;32mI (715) ACTOR_GUEST_TEST: Starting movement detection...[0m
+[0;32mI (715) MOVEMENT_HANDLER: Starting movement detection...[0m
+[0;32mI (715) MOVEMENT_HANDLER: Movement detection task started[0m
+[0;32mI (725) MOVEMENT_HANDLER: Movement detection started[0m
+[0;32mI (735) ACTOR_GUEST_TEST: Self MAC: 34:98:7A:B5:96:E4[0m
+[0;32mI (735) ACTOR_GUEST_TEST: Initializing IR Handler...[0m
+[0;32mI (745) IR_HANDLER: Initializing IR handler system...[0m
+[0;32mI (745) IR_HANDLER: Setting up RMT TX for IR on GPIO 26[0m
+[0;32mI (755) gpio: GPIO[26]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (765) IR_HANDLER: RMT TX setup completed successfully[0m
+[0;32mI (765) IR_HANDLER: Setting up UART RX for IR on GPIO 36[0m
+[0;32mI (775) IR_HANDLER: UART RX setup completed successfully on GPIO36 @ 2400-8N1[0m
+[0;32mI (785) IR_HANDLER: IR handler system initialized successfully[0m
+[0;32mI (785) IR_HANDLER: IR reception enabled[0m
+[0;32mI (795) ACTOR_GUEST_TEST: [0m
+[0;32mI (795) ACTOR_GUEST_TEST: 🎮 ACTOR/GUEST TEST INSTRUCTIONS:[0m
+[0;32mI (805) ACTOR_GUEST_TEST: ==================================[0m
+[0;32mI (805) ACTOR_GUEST_TEST: 1. Device starts in GUEST mode[0m
+[0;32mI (815) ACTOR_GUEST_TEST: 2. Hold A+C buttons for 5 seconds to switch to ACTOR mode[0m
+[0;32mI (825) ACTOR_GUEST_TEST: 3. GUEST: Receives IR signals and adds radiation[0m
+[0;32mI (835) ACTOR_GUEST_TEST: 4. ACTOR: Sends IR signals continuously[0m
+[0;32mI (835) ACTOR_GUEST_TEST: 5. ACTOR: Press A to decrease radiation -1%, C to increase +1%[0m
+[0;32mI (845) ACTOR_GUEST_TEST: 6. Move device to reduce radiation[0m
+[0;32mI (855) ACTOR_GUEST_TEST: 7. Guest has 2-second cooldown between IR signals[0m
+[0;32mI (865) ACTOR_GUEST_TEST: [0m
+[0;32mI (915) ACTOR_GUEST_TEST: ✅ Test started! Device is in GUEST mode.[0m
+[0;32mI (10365) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (10465) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (10565) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (10705) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (10805) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (14045) ACTOR_GUEST_TEST: Buttons A+C pressed, starting hold timer...[0m
+[0;32mI (19105) ACTOR_GUEST_TEST: Mode switched to: ACTOR[0m
+[0;32mI (19155) ACTOR_GUEST_TEST: Actor task started[0m
+[0;32mI (19205) IR_HANDLER: IR packet transmitted (SEQ=0)[0m
+[0;32mI (19205) ACTOR_GUEST_TEST: 📡 IR signal sent with 10% radiation[0m
+[0;32mI (19255) ACTOR_GUEST_TEST: Buttons A+C pressed, starting hold timer...[0m
+[0;32mI (19265) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (19265) IR_HANDLER: 5a 54 09 00 00 34 98 7a b5 96 e4 0a 0c [0m
+[0;32mI (19265) IR_HANDLER: Found preamble at index 0[0m
+[0;32mI (19265) IR_HANDLER: Packet length: 9[0m
+[0;32mI (19275) IR_HANDLER: Packet size check passed[0m
+[0;32mI (19275) IR_HANDLER: Received CRC: 0x0C[0m
+[0;32mI (19285) IR_HANDLER: 00 00 34 98 7a b5 96 e4 0a [0m
+[0;32mI (19285) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (19295) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (19305) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (20305) IR_HANDLER: IR packet transmitted (SEQ=1)[0m
+[0;32mI (20305) ACTOR_GUEST_TEST: 📡 IR signal sent with 10% radiation[0m
+[0;32mI (20355) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=2[0m
+[0;32mI (20365) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (20365) IR_HANDLER: 5a 54 09 01 00 34 98 7a b5 96 e4 0a 45 [0m
+[0;32mI (20365) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (20375) IR_HANDLER: Packet length: 9[0m
+[0;32mI (20375) IR_HANDLER: Packet size check passed[0m
+[0;32mI (20385) IR_HANDLER: Received CRC: 0x45[0m
+[0;32mI (20385) IR_HANDLER: 01 00 34 98 7a b5 96 e4 0a [0m
+[0;32mI (20395) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (20395) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (20405) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (20505) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=2[0m
+[0;32mI (20605) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=2[0m
+[0;32mI (20705) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=2[0m
+[0;32mI (20805) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=2[0m
+[0;32mI (21405) IR_HANDLER: IR packet transmitted (SEQ=2)[0m
+[0;32mI (21405) ACTOR_GUEST_TEST: 📡 IR signal sent with 10% radiation[0m
+[0;32mI (21465) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (21465) IR_HANDLER: 5a 54 09 02 00 34 98 7a b5 96 e4 0a 9e [0m
+[0;32mI (21465) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (21465) IR_HANDLER: Packet length: 9[0m
+[0;32mI (21475) IR_HANDLER: Packet size check passed[0m
+[0;32mI (21475) IR_HANDLER: Received CRC: 0x9E[0m
+[0;32mI (21485) IR_HANDLER: 02 00 34 98 7a b5 96 e4 0a [0m
+[0;32mI (21485) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (21495) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (21505) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (22505) IR_HANDLER: IR packet transmitted (SEQ=3)[0m
+[0;32mI (22505) ACTOR_GUEST_TEST: 📡 IR signal sent with 10% radiation[0m
+[0;32mI (22565) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (22565) IR_HANDLER: 5a 54 09 03 00 34 98 7a b5 96 e4 0a d7 [0m
+[0;32mI (22565) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (22565) IR_HANDLER: Packet length: 9[0m
+[0;32mI (22575) IR_HANDLER: Packet size check passed[0m
+[0;32mI (22575) IR_HANDLER: Received CRC: 0xD7[0m
+[0;32mI (22585) IR_HANDLER: 03 00 34 98 7a b5 96 e4 0a [0m
+[0;32mI (22585) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (22595) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (22605) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (23605) IR_HANDLER: IR packet transmitted (SEQ=4)[0m
+[0;32mI (23605) ACTOR_GUEST_TEST: 📡 IR signal sent with 10% radiation[0m
+[0;32mI (23665) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (23665) IR_HANDLER: 5a 54 09 04 00 34 98 7a b5 96 e4 0a 19 [0m
+[0;32mI (23665) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (23665) IR_HANDLER: Packet length: 9[0m
+[0;32mI (23675) IR_HANDLER: Packet size check passed[0m
+[0;32mI (23675) IR_HANDLER: Received CRC: 0x19[0m
+[0;32mI (23685) IR_HANDLER: 04 00 34 98 7a b5 96 e4 0a [0m
+[0;32mI (23685) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (23695) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (23705) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (24655) ACTOR_GUEST_TEST: Actor radiation increased to 11%[0m
+[0;32mI (24705) IR_HANDLER: IR packet transmitted (SEQ=5)[0m
+[0;32mI (24705) ACTOR_GUEST_TEST: 📡 IR signal sent with 11% radiation[0m
+[0;32mI (24765) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (24765) IR_HANDLER: 5a 54 09 05 00 34 98 7a b5 96 e4 0a 50 [0m
+[0;32mI (24765) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (24765) IR_HANDLER: Packet length: 9[0m
+[0;32mI (24775) IR_HANDLER: Packet size check passed[0m
+[0;32mI (24775) IR_HANDLER: Received CRC: 0x50[0m
+[0;32mI (24785) IR_HANDLER: 05 00 34 98 7a b5 96 e4 0a [0m
+[0;32mI (24785) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (24795) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (24805) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (25805) IR_HANDLER: IR packet transmitted (SEQ=6)[0m
+[0;32mI (25805) ACTOR_GUEST_TEST: 📡 IR signal sent with 11% radiation[0m
+[0;32mI (25865) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (25865) IR_HANDLER: 5a 54 09 06 00 34 98 7a b5 96 e4 0b 8b [0m
+[0;32mI (25865) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (25865) IR_HANDLER: Packet length: 9[0m
+[0;32mI (25875) IR_HANDLER: Packet size check passed[0m
+[0;32mI (25875) IR_HANDLER: Received CRC: 0x8B[0m
+[0;32mI (25885) IR_HANDLER: 06 00 34 98 7a b5 96 e4 0b [0m
+[0;32mI (25885) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (25895) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (25905) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (26055) ACTOR_GUEST_TEST: Actor radiation increased to 12%[0m
+[0;32mI (26905) IR_HANDLER: IR packet transmitted (SEQ=7)[0m
+[0;32mI (26905) ACTOR_GUEST_TEST: 📡 IR signal sent with 12% radiation[0m
+[0;32mI (26965) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (26965) IR_HANDLER: 5a 54 09 07 00 34 98 7a b5 96 e4 0c c2 [0m
+[0;32mI (26965) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (26965) IR_HANDLER: Packet length: 9[0m
+[0;32mI (26975) IR_HANDLER: Packet size check passed[0m
+[0;32mI (26975) IR_HANDLER: Received CRC: 0xC2[0m
+[0;32mI (26985) IR_HANDLER: 07 00 34 98 7a b5 96 e4 0c [0m
+[0;32mI (26985) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (26995) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (27005) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (27505) ACTOR_GUEST_TEST: Actor radiation increased to 13%[0m
+[0;32mI (28005) IR_HANDLER: IR packet transmitted (SEQ=8)[0m
+[0;32mI (28005) ACTOR_GUEST_TEST: 📡 IR signal sent with 13% radiation[0m
+[0;32mI (28065) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (28065) IR_HANDLER: 5a 54 09 08 00 34 98 7a b5 96 e4 0d 26 [0m
+[0;32mI (28065) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (28065) IR_HANDLER: Packet length: 9[0m
+[0;32mI (28075) IR_HANDLER: Packet size check passed[0m
+[0;32mI (28075) IR_HANDLER: Received CRC: 0x26[0m
+[0;32mI (28085) IR_HANDLER: 08 00 34 98 7a b5 96 e4 0d [0m
+[0;32mI (28085) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (28095) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (28105) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (28905) ACTOR_GUEST_TEST: Actor radiation increased to 14%[0m
+[0;32mI (29105) IR_HANDLER: IR packet transmitted (SEQ=9)[0m
+[0;32mI (29105) ACTOR_GUEST_TEST: 📡 IR signal sent with 14% radiation[0m
+[0;32mI (29165) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (29165) IR_HANDLER: 5a 54 09 09 00 34 98 7a b5 96 e4 0e 6f [0m
+[0;32mI (29165) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (29165) IR_HANDLER: Packet length: 9[0m
+[0;32mI (29175) IR_HANDLER: Packet size check passed[0m
+[0;32mI (29175) IR_HANDLER: Received CRC: 0x6F[0m
+[0;32mI (29185) IR_HANDLER: 09 00 34 98 7a b5 96 e4 0e [0m
+[0;32mI (29185) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (29195) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (29205) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (29905) ACTOR_GUEST_TEST: Actor radiation increased to 15%[0m
+[0;32mI (30205) IR_HANDLER: IR packet transmitted (SEQ=10)[0m
+[0;32mI (30205) ACTOR_GUEST_TEST: 📡 IR signal sent with 15% radiation[0m
+[0;32mI (30265) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (30265) IR_HANDLER: 5a 54 09 0a 00 34 98 7a b5 96 e4 0f b4 [0m
+[0;32mI (30265) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (30265) IR_HANDLER: Packet length: 9[0m
+[0;32mI (30275) IR_HANDLER: Packet size check passed[0m
+[0;32mI (30275) IR_HANDLER: Received CRC: 0xB4[0m
+[0;32mI (30285) IR_HANDLER: 0a 00 34 98 7a b5 96 e4 0f [0m
+[0;32mI (30285) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (30295) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (30305) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (30405) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=11[0m
+[0;32mI (30555) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=11[0m
+[0;32mI (30655) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=11[0m
+[0;32mI (30755) ACTOR_GUEST_TEST: Actor radiation increased to 16%[0m
+[0;32mI (30795) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=11[0m
+[0;32mI (31245) ACTOR_GUEST_TEST: Actor radiation increased to 17%[0m
+[0;32mI (31305) IR_HANDLER: IR packet transmitted (SEQ=11)[0m
+[0;32mI (31305) ACTOR_GUEST_TEST: 📡 IR signal sent with 17% radiation[0m
+[0;32mI (31365) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (31365) IR_HANDLER: 5a 54 09 0b 00 34 98 7a b5 96 e4 11 fd [0m
+[0;32mI (31365) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (31365) IR_HANDLER: Packet length: 9[0m
+[0;32mI (31375) IR_HANDLER: Packet size check passed[0m
+[0;32mI (31375) IR_HANDLER: Received CRC: 0xFD[0m
+[0;32mI (31385) IR_HANDLER: 0b 00 34 98 7a b5 96 e4 11 [0m
+[0;32mI (31385) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (31395) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (31405) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (31755) ACTOR_GUEST_TEST: Actor radiation increased to 18%[0m
+[0;32mI (32195) ACTOR_GUEST_TEST: Actor radiation increased to 19%[0m
+[0;32mI (32405) IR_HANDLER: IR packet transmitted (SEQ=12)[0m
+[0;32mI (32405) ACTOR_GUEST_TEST: 📡 IR signal sent with 19% radiation[0m
+[0;32mI (32465) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (32465) IR_HANDLER: 5a 54 09 0c 00 34 98 7a b5 96 e4 13 33 [0m
+[0;32mI (32465) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (32465) IR_HANDLER: Packet length: 9[0m
+[0;32mI (32475) IR_HANDLER: Packet size check passed[0m
+[0;32mI (32475) IR_HANDLER: Received CRC: 0x33[0m
+[0;32mI (32485) IR_HANDLER: 0c 00 34 98 7a b5 96 e4 13 [0m
+[0;32mI (32485) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (32495) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (32505) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (32605) ACTOR_GUEST_TEST: Actor radiation increased to 20%[0m
+[0;32mI (33505) IR_HANDLER: IR packet transmitted (SEQ=13)[0m
+[0;32mI (33505) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (33565) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (33565) IR_HANDLER: 5a 54 09 0d 00 34 98 7a b5 96 e4 14 7a [0m
+[0;32mI (33565) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (33565) IR_HANDLER: Packet length: 9[0m
+[0;32mI (33575) IR_HANDLER: Packet size check passed[0m
+[0;32mI (33575) IR_HANDLER: Received CRC: 0x7A[0m
+[0;32mI (33585) IR_HANDLER: 0d 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (33585) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (33595) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (33605) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (34605) IR_HANDLER: IR packet transmitted (SEQ=14)[0m
+[0;32mI (34605) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (34665) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (34665) IR_HANDLER: 5a 54 09 0e 00 34 98 7a b5 96 e4 14 a1 [0m
+[0;32mI (34665) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (34665) IR_HANDLER: Packet length: 9[0m
+[0;32mI (34675) IR_HANDLER: Packet size check passed[0m
+[0;32mI (34675) IR_HANDLER: Received CRC: 0xA1[0m
+[0;32mI (34685) IR_HANDLER: 0e 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (34685) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (34695) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (34705) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (35705) IR_HANDLER: IR packet transmitted (SEQ=15)[0m
+[0;32mI (35705) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (35765) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (35765) IR_HANDLER: 5a 54 09 0f 00 34 98 7a b5 96 e4 14 e8 [0m
+[0;32mI (35765) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (35765) IR_HANDLER: Packet length: 9[0m
+[0;32mI (35775) IR_HANDLER: Packet size check passed[0m
+[0;32mI (35775) IR_HANDLER: Received CRC: 0xE8[0m
+[0;32mI (35785) IR_HANDLER: 0f 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (35785) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (35795) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (35805) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (36805) IR_HANDLER: IR packet transmitted (SEQ=16)[0m
+[0;32mI (36805) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (36865) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (36865) IR_HANDLER: 5a 54 09 10 00 34 98 7a b5 96 e4 14 58 [0m
+[0;32mI (36865) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (36865) IR_HANDLER: Packet length: 9[0m
+[0;32mI (36875) IR_HANDLER: Packet size check passed[0m
+[0;32mI (36875) IR_HANDLER: Received CRC: 0x58[0m
+[0;32mI (36885) IR_HANDLER: 10 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (36885) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (36895) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (36905) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (37905) IR_HANDLER: IR packet transmitted (SEQ=17)[0m
+[0;32mI (37905) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (37965) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (37965) IR_HANDLER: 5a 54 09 11 00 34 98 7a b5 96 e4 14 11 [0m
+[0;32mI (37965) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (37965) IR_HANDLER: Packet length: 9[0m
+[0;32mI (37975) IR_HANDLER: Packet size check passed[0m
+[0;32mI (37975) IR_HANDLER: Received CRC: 0x11[0m
+[0;32mI (37985) IR_HANDLER: 11 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (37985) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (37995) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (38005) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (39005) IR_HANDLER: IR packet transmitted (SEQ=18)[0m
+[0;32mI (39005) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (39065) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (39065) IR_HANDLER: 5a 54 09 12 00 34 98 7a b5 96 e4 14 ca [0m
+[0;32mI (39065) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (39065) IR_HANDLER: Packet length: 9[0m
+[0;32mI (39075) IR_HANDLER: Packet size check passed[0m
+[0;32mI (39075) IR_HANDLER: Received CRC: 0xCA[0m
+[0;32mI (39085) IR_HANDLER: 12 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (39085) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (39095) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (39105) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (40105) IR_HANDLER: IR packet transmitted (SEQ=19)[0m
+[0;32mI (40105) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (40165) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (40165) IR_HANDLER: 5a 54 09 13 00 34 98 7a b5 96 e4 14 83 [0m
+[0;32mI (40165) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (40165) IR_HANDLER: Packet length: 9[0m
+[0;32mI (40175) IR_HANDLER: Packet size check passed[0m
+[0;32mI (40175) IR_HANDLER: Received CRC: 0x83[0m
+[0;32mI (40185) IR_HANDLER: 13 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (40185) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (40195) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (40205) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (40355) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=20[0m
+[0;32mI (40505) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=20[0m
+[0;32mI (40605) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=20[0m
+[0;32mI (40705) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=20[0m
+[0;32mI (40805) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=0, IR_RX=0, IR_TX=20[0m
+[0;32mI (41205) IR_HANDLER: IR packet transmitted (SEQ=20)[0m
+[0;32mI (41205) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (41265) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (41265) IR_HANDLER: 5a 54 09 14 00 34 98 7a b5 96 e4 14 4d [0m
+[0;32mI (41265) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (41265) IR_HANDLER: Packet length: 9[0m
+[0;32mI (41275) IR_HANDLER: Packet size check passed[0m
+[0;32mI (41275) IR_HANDLER: Received CRC: 0x4D[0m
+[0;32mI (41285) IR_HANDLER: 14 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (41285) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (41295) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (41305) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (42305) IR_HANDLER: IR packet transmitted (SEQ=21)[0m
+[0;32mI (42305) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (42365) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (42365) IR_HANDLER: 5a 54 09 15 00 34 98 7a b5 96 e4 14 04 [0m
+[0;32mI (42365) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (42365) IR_HANDLER: Packet length: 9[0m
+[0;32mI (42375) IR_HANDLER: Packet size check passed[0m
+[0;32mI (42375) IR_HANDLER: Received CRC: 0x04[0m
+[0;32mI (42385) IR_HANDLER: 15 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (42385) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (42395) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (42405) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (43405) IR_HANDLER: IR packet transmitted (SEQ=22)[0m
+[0;32mI (43405) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (43465) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (43465) IR_HANDLER: 5a 54 09 16 00 34 98 7a b5 96 e4 14 df [0m
+[0;32mI (43465) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (43465) IR_HANDLER: Packet length: 9[0m
+[0;32mI (43475) IR_HANDLER: Packet size check passed[0m
+[0;32mI (43475) IR_HANDLER: Received CRC: 0xDF[0m
+[0;32mI (43485) IR_HANDLER: 16 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (43485) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (43495) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (43505) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (44505) IR_HANDLER: IR packet transmitted (SEQ=23)[0m
+[0;32mI (44505) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (44565) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (44565) IR_HANDLER: 5a 54 09 17 00 34 98 7a b5 96 e4 14 96 [0m
+[0;32mI (44565) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (44565) IR_HANDLER: Packet length: 9[0m
+[0;32mI (44575) IR_HANDLER: Packet size check passed[0m
+[0;32mI (44575) IR_HANDLER: Received CRC: 0x96[0m
+[0;32mI (44585) IR_HANDLER: 17 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (44585) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (44595) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (44605) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (45605) IR_HANDLER: IR packet transmitted (SEQ=24)[0m
+[0;32mI (45605) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (45665) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (45665) IR_HANDLER: 5a 54 09 18 00 34 98 7a b5 96 e4 14 72 [0m
+[0;32mI (45665) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (45665) IR_HANDLER: Packet length: 9[0m
+[0;32mI (45675) IR_HANDLER: Packet size check passed[0m
+[0;32mI (45675) IR_HANDLER: Received CRC: 0x72[0m
+[0;32mI (45685) IR_HANDLER: 18 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (45685) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (45695) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (45705) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (46225) MOVEMENT_HANDLER: Movement detected: delta=0.812, reduction=1%[0m
+[0;32mI (46225) ACTOR_GUEST_TEST: 🏃 Movement detected! Magnitude=0.812, Reduction=1%, New radiation=0%[0m
+[0;32mI (46705) IR_HANDLER: IR packet transmitted (SEQ=25)[0m
+[0;32mI (46705) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (46765) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (46765) IR_HANDLER: 5a 54 09 19 00 34 98 7a b5 96 e4 14 3b [0m
+[0;32mI (46765) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (46765) IR_HANDLER: Packet length: 9[0m
+[0;32mI (46775) IR_HANDLER: Packet size check passed[0m
+[0;32mI (46775) IR_HANDLER: Received CRC: 0x3B[0m
+[0;32mI (46785) IR_HANDLER: 19 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (46785) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (46795) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (46805) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (47805) IR_HANDLER: IR packet transmitted (SEQ=26)[0m
+[0;32mI (47805) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (47865) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (47865) IR_HANDLER: 5a 54 09 1a 00 34 98 7a b5 96 e4 14 e0 [0m
+[0;32mI (47865) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (47865) IR_HANDLER: Packet length: 9[0m
+[0;32mI (47875) IR_HANDLER: Packet size check passed[0m
+[0;32mI (47875) IR_HANDLER: Received CRC: 0xE0[0m
+[0;32mI (47885) IR_HANDLER: 1a 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (47885) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (47895) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (47905) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (48905) IR_HANDLER: IR packet transmitted (SEQ=27)[0m
+[0;32mI (48905) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (48965) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (48965) IR_HANDLER: 5a 54 09 1b 00 34 98 7a b5 96 e4 14 a9 [0m
+[0;32mI (48965) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (48965) IR_HANDLER: Packet length: 9[0m
+[0;32mI (48975) IR_HANDLER: Packet size check passed[0m
+[0;32mI (48975) IR_HANDLER: Received CRC: 0xA9[0m
+[0;32mI (48985) IR_HANDLER: 1b 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (48985) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (48995) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (49005) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (50005) IR_HANDLER: IR packet transmitted (SEQ=28)[0m
+[0;32mI (50005) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (50065) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (50065) IR_HANDLER: 5a 54 09 1c 00 34 98 7a b5 96 e4 14 67 [0m
+[0;32mI (50065) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (50065) IR_HANDLER: Packet length: 9[0m
+[0;32mI (50075) IR_HANDLER: Packet size check passed[0m
+[0;32mI (50075) IR_HANDLER: Received CRC: 0x67[0m
+[0;32mI (50085) IR_HANDLER: 1c 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (50085) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (50095) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (50105) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (50405) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=1, IR_RX=0, IR_TX=29[0m
+[0;32mI (50505) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=1, IR_RX=0, IR_TX=29[0m
+[0;32mI (50605) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=1, IR_RX=0, IR_TX=29[0m
+[0;32mI (50705) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=1, IR_RX=0, IR_TX=29[0m
+[0;32mI (50805) ACTOR_GUEST_TEST: 📊 Status: Mode=ACTOR, Radiation=0%, Movements=1, IR_RX=0, IR_TX=29[0m
+[0;32mI (51105) IR_HANDLER: IR packet transmitted (SEQ=29)[0m
+[0;32mI (51105) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (51165) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (51165) IR_HANDLER: 5a 54 09 1d 00 34 98 7a b5 96 e4 14 2e [0m
+[0;32mI (51165) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (51165) IR_HANDLER: Packet length: 9[0m
+[0;32mI (51175) IR_HANDLER: Packet size check passed[0m
+[0;32mI (51175) IR_HANDLER: Received CRC: 0x2E[0m
+[0;32mI (51185) IR_HANDLER: 1d 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (51185) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (51195) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (51205) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (52205) IR_HANDLER: IR packet transmitted (SEQ=30)[0m
+[0;32mI (52205) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (52265) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (52265) IR_HANDLER: 5a 54 09 1e 00 34 98 7a b5 96 e4 14 f5 [0m
+[0;32mI (52265) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (52265) IR_HANDLER: Packet length: 9[0m
+[0;32mI (52275) IR_HANDLER: Packet size check passed[0m
+[0;32mI (52275) IR_HANDLER: Received CRC: 0xF5[0m
+[0;32mI (52285) IR_HANDLER: 1e 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (52285) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (52295) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (52305) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (53305) IR_HANDLER: IR packet transmitted (SEQ=31)[0m
+[0;32mI (53305) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (53365) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (53365) IR_HANDLER: 5a 54 09 1f 00 34 98 7a b5 96 e4 14 bc [0m
+[0;32mI (53365) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (53365) IR_HANDLER: Packet length: 9[0m
+[0;32mI (53375) IR_HANDLER: Packet size check passed[0m
+[0;32mI (53375) IR_HANDLER: Received CRC: 0xBC[0m
+[0;32mI (53385) IR_HANDLER: 1f 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (53385) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (53395) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (53405) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (54405) IR_HANDLER: IR packet transmitted (SEQ=32)[0m
+[0;32mI (54405) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (54465) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (54465) IR_HANDLER: 5a 54 09 20 00 34 98 7a b5 96 e4 14 a4 [0m
+[0;32mI (54465) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (54465) IR_HANDLER: Packet length: 9[0m
+[0;32mI (54475) IR_HANDLER: Packet size check passed[0m
+[0;32mI (54475) IR_HANDLER: Received CRC: 0xA4[0m
+[0;32mI (54485) IR_HANDLER: 20 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (54485) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (54495) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (54505) ACTOR_GUEST_TEST: Ignoring packet from self[0m
+[0;32mI (55505) IR_HANDLER: IR packet transmitted (SEQ=33)[0m
+[0;32mI (55505) ACTOR_GUEST_TEST: 📡 IR signal sent with 20% radiation[0m
+[0;32mI (55565) IR_HANDLER: UART RX: 13 bytes received[0m
+[0;32mI (55565) IR_HANDLER: 5a 54 09 21 00 34 98 7a b5 96 e4 14 ed [0m
+[0;32mI (55565) IR_HANDLER: Found preamble at index 1[0m
+[0;32mI (55565) IR_HANDLER: Packet length: 9[0m
+[0;32mI (55575) IR_HANDLER: Packet size check passed[0m
+[0;32mI (55575) IR_HANDLER: Received CRC: 0xED[0m
+[0;32mI (55585) IR_HANDLER: 21 00 34 98 7a b5 96 e4 14 [0m
+[0;32mI (55585) IR_HANDLER: CRC validation temporarily disabled - processing packet[0m
+[0;32mI (55595) ACTOR_GUEST_TEST: 📡 IR callback triggered! Mode=ACTOR, RSSI=128[0m
+[0;32mI (55605) ACTOR_GUEST_TEST: Ignoring packet from self[0m

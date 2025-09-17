@@ -1,0 +1,20 @@
+# ESP-IDF build directory
+build/
+
+# ESP-IDF configuration
+sdkconfig.old
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

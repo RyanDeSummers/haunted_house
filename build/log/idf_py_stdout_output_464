@@ -1,0 +1,27 @@
+[1/9] Performing build step for 'bootloader'
+[1/1] C:\WINDOWS\system32\cmd.exe /C "cd /D C:\esp-idf-v5.3.3\projects\haunted_house\build\bootloader\esp-idf\esptool_py && C:\Espressif\python_env\idf5.3_py3.10_env\Scripts\python.exe C:/esp-idf-v5.3.3/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 C:/esp-idf-v5.3.3/projects/haunted_house/build/bootloader/bootloader.bin"
+Bootloader binary size 0x68d0 bytes. 0x730 bytes (6%) free.
+[2/9] No install step for 'bootloader'
+[3/9] Completed 'bootloader'
+[4/9] Building CXX object esp-idf/main/CMakeFiles/__idf_main.dir/movement_handler.cpp.obj
+C:/esp-idf-v5.3.3/projects/haunted_house/main/movement_handler.cpp:46:48: warning: missing initializer for member 'accelerometer_data_t::y' [-Wmissing-field-initializers]
+   46 | static accelerometer_data_t g_current_data = {0};
+      |                                                ^
+C:/esp-idf-v5.3.3/projects/haunted_house/main/movement_handler.cpp:46:48: warning: missing initializer for member 'accelerometer_data_t::z' [-Wmissing-field-initializers]
+C:/esp-idf-v5.3.3/projects/haunted_house/main/movement_handler.cpp:46:48: warning: missing initializer for member 'accelerometer_data_t::magnitude' [-Wmissing-field-initializers]
+C:/esp-idf-v5.3.3/projects/haunted_house/main/movement_handler.cpp:47:49: warning: missing initializer for member 'accelerometer_data_t::y' [-Wmissing-field-initializers]
+   47 | static accelerometer_data_t g_previous_data = {0};
+      |                                                 ^
+C:/esp-idf-v5.3.3/projects/haunted_house/main/movement_handler.cpp:47:49: warning: missing initializer for member 'accelerometer_data_t::z' [-Wmissing-field-initializers]
+C:/esp-idf-v5.3.3/projects/haunted_house/main/movement_handler.cpp:47:49: warning: missing initializer for member 'accelerometer_data_t::magnitude' [-Wmissing-field-initializers]
+[5/9] Linking C static library esp-idf\main\libmain.a
+[6/9] Generating ld/sections.ld
+[7/9] Linking CXX executable haunted_house.elf
+[8/9] Generating binary image from built executable
+esptool.py v4.9.0
+Creating esp32 image...
+Merged 2 ELF sections
+Successfully created esp32 image.
+Generated C:/esp-idf-v5.3.3/projects/haunted_house/build/haunted_house.bin
+[9/9] C:\WINDOWS\system32\cmd.exe /C "cd /D C:\esp-idf-v5.3.3\projects\haunted_house\build\esp-idf\esptool_py && C:\Espressif\python_env\idf5.3_py3.10_env\Scripts\python.exe C:/esp-idf-v5.3.3/components/partition_table/check_sizes.py --offset 0x8000 partition --type app C:/esp-idf-v5.3.3/projects/haunted_house/build/partition_table/partition-table.bin C:/esp-idf-v5.3.3/projects/haunted_house/build/haunted_house.bin"
+haunted_house.bin binary size 0x56640 bytes. Smallest app partition is 0x100000 bytes. 0xa99c0 bytes (66%) free.

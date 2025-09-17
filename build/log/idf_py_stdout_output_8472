@@ -1,0 +1,102 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x17 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7176
+load:0x40078000,len:15644
+ho 0 tail 12 room 4
+load:0x40080400,len:4
+load:0x40080404,len:3904
+entry 0x40080640
+[0;32mI (31) boot: ESP-IDF v5.3.3-dirty 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Sep 13 2025 13:57:34[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (36) boot: chip revision: v3.1[0m
+[0;32mI (40) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (44) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (49) boot.esp32: SPI Flash Size : 2MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (59) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (70) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (77) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (85) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (92) boot: End of partition table[0m
+[0;32mI (96) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=13340h ( 78656) map[0m
+[0;32mI (132) esp_image: segment 1: paddr=00023368 vaddr=3ffb0000 size=02880h ( 10368) load[0m
+[0;32mI (136) esp_image: segment 2: paddr=00025bf0 vaddr=40080000 size=0a428h ( 42024) load[0m
+[0;32mI (154) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=34a24h (215588) map[0m
+[0;32mI (228) esp_image: segment 4: paddr=00064a4c vaddr=4008a428 size=0686ch ( 26732) load[0m
+[0;32mI (247) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (247) boot: Disabling RNG early entropy source...[0m
+[0;32mI (260) cpu_start: Multicore app[0m
+[0;32mI (268) cpu_start: Pro cpu start user code[0m
+[0;32mI (268) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (268) app_init: Application information:[0m
+[0;32mI (271) app_init: Project name:     haunted_house[0m
+[0;32mI (276) app_init: App version:      1[0m
+[0;32mI (281) app_init: Compile time:     Sep 13 2025 13:56:39[0m
+[0;32mI (287) app_init: ELF file SHA256:  93bb11010...[0m
+[0;32mI (292) app_init: ESP-IDF:          v5.3.3-dirty[0m
+[0;32mI (297) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (302) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (307) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (312) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (319) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (325) heap_init: At 3FFB3670 len 0002C990 (178 KiB): DRAM[0m
+[0;32mI (331) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (338) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (344) heap_init: At 40090C94 len 0000F36C (60 KiB): IRAM[0m
+[0;32mI (352) spi_flash: detected chip: generic[0m
+[0;32mI (355) spi_flash: flash io: dio[0m
+[0;33mW (359) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;33mW (372) i2c: This driver is an old driver, please migrate your application code to adapt `driver/i2c_master.h`[0m
+[0;32mI (384) main_task: Started on CPU0[0m
+[0;32mI (394) main_task: Calling app_main()[0m
+Haunted House Project - Actor/Guest IR Test
+Testing IR radiation communication between devices
+[0;32mI (394) gpio: GPIO[15]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (434) M5GFX: [Autodetect] M5Stack[0m
+Display initialized
+Starting Actor/Guest Test...
+[0;32mI (574) ACTOR_GUEST_TEST: 🧪 ACTOR/GUEST TEST[0m
+[0;32mI (574) ACTOR_GUEST_TEST: ==================[0m
+[0;32mI (574) ACTOR_GUEST_TEST: Display initialized[0m
+[0;32mI (584) gpio: GPIO[37]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (584) gpio: GPIO[39]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (594) ACTOR_GUEST_TEST: Initializing Movement Handler...[0m
+[0;32mI (604) MOVEMENT_HANDLER: Initializing movement handler...[0m
+[0;32mI (614) MOVEMENT_HANDLER: MPU6886 WHO_AM_I: 0x19[0m
+[0;32mI (714) MOVEMENT_HANDLER: Movement handler initialized successfully[0m
+[0;32mI (714) ACTOR_GUEST_TEST: Starting movement detection...[0m
+[0;32mI (714) MOVEMENT_HANDLER: Starting movement detection...[0m
+[0;32mI (714) MOVEMENT_HANDLER: Movement detection task started[0m
+[0;32mI (724) MOVEMENT_HANDLER: Movement detection started[0m
+[0;32mI (734) ACTOR_GUEST_TEST: Initializing IR Handler...[0m
+[0;32mI (734) IR_HANDLER: Initializing IR handler system...[0m
+[0;32mI (744) IR_HANDLER: Setting up RMT TX for IR on GPIO 26[0m
+[0;32mI (744) gpio: GPIO[26]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (754) IR_HANDLER: RMT TX setup completed successfully[0m
+[0;32mI (764) IR_HANDLER: Setting up UART RX for IR on GPIO 36[0m
+[0;32mI (764) IR_HANDLER: UART RX setup completed successfully on GPIO36 @ 2400-8N1[0m
+[0;32mI (774) IR_HANDLER: IR handler system initialized successfully[0m
+[0;32mI (784) ACTOR_GUEST_TEST: [0m
+[0;32mI (784) ACTOR_GUEST_TEST: 🎮 ACTOR/GUEST TEST INSTRUCTIONS:[0m
+[0;32mI (794) ACTOR_GUEST_TEST: ==================================[0m
+[0;32mI (794) ACTOR_GUEST_TEST: 1. Device starts in GUEST mode[0m
+[0;32mI (804) ACTOR_GUEST_TEST: 2. Hold A+C buttons for 5 seconds to switch to ACTOR mode[0m
+[0;32mI (814) ACTOR_GUEST_TEST: 3. GUEST: Receives IR signals and adds radiation[0m
+[0;32mI (824) ACTOR_GUEST_TEST: 4. ACTOR: Sends IR signals continuously[0m
+[0;32mI (824) ACTOR_GUEST_TEST: 5. Move device to reduce radiation[0m
+[0;32mI (834) ACTOR_GUEST_TEST: 6. Guest has 2-second cooldown between IR signals[0m
+[0;32mI (844) ACTOR_GUEST_TEST: [0m
+[0;32mI (894) ACTOR_GUEST_TEST: ✅ Test started! Device is in GUEST mode.[0m
+[0;32mI (10444) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (10544) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (10684) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (10794) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (20414) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (20514) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m
+[0;32mI (20614) ACTOR_GUEST_TEST: 📊 Status: Mode=GUEST, Radiation=0%, Movements=0, IR_RX=0, IR_TX=0[0m

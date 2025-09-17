@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.shellArgs.windows": ["/k", "C:\\esp-idf-v5.3.3\\export.bat"]
+}
+
+
