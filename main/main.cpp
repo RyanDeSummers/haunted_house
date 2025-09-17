@@ -20,7 +20,7 @@ extern "C" void app_main(void)
     // Initialize LED strip
     led_strip_config_t strip_config = {};
     strip_config.strip_gpio_num = 15;
-    strip_config.max_leds = 1;
+    strip_config.max_leds = 10; // M5Stack Fire has 10 LEDs total (5 on each side)
     led_strip_rmt_config_t rmt_config = {};
     rmt_config.resolution_hz = 10 * 1000 * 1000;
     if (led_strip_new_rmt_device(&strip_config, &rmt_config, &led_strip) != ESP_OK) {

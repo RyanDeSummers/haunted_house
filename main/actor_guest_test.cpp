@@ -11,6 +11,7 @@
 #include "esp_mac.h"
 #include <string>
 #include <cstring>
+#include <cmath>
 
 static const char* TAG = "ACTOR_GUEST_TEST";
 
@@ -21,6 +22,7 @@ extern led_strip_handle_t led_strip;
 // Button configuration
 #define BUTTON_A_PIN 39
 #define BUTTON_C_PIN 37
+#define BUTTON_MIDDLE_PIN 38  // Middle button for start screen
 #define BUTTON_HOLD_TIME_MS 5000
 
 // Test configuration
@@ -31,12 +33,13 @@ extern led_strip_handle_t led_strip;
 
 // Device modes
 typedef enum {
-    MODE_GUEST = 0,
-    MODE_ACTOR = 1
+    MODE_START_SCREEN = 0,
+    MODE_GUEST = 1,
+    MODE_ACTOR = 2
 } device_mode_t;
 
 // Test state
-static device_mode_t current_mode = MODE_GUEST;
+static device_mode_t current_mode = MODE_START_SCREEN;
 static uint8_t current_radiation = 0;
 static uint32_t movement_count = 0;
 static uint32_t last_movement_time = 0;
@@ -69,15 +72,20 @@ static void show_radiation_indicator(uint8_t radiation) {
         red = 255;
     }
     
-    led_strip_set_pixel(led_strip, 0, red, green, blue);
+    // Light up all LEDs in the strip (10 total: 5 on each side)
+    for (int i = 0; i < 10; i++) {
+        led_strip_set_pixel(led_strip, i, red, green, blue);
+    }
     led_strip_refresh(led_strip);
 }
 
 static void show_movement_indicator() {
     if (!led_strip) return;
     
-    // Blue flash for movement
-    led_strip_set_pixel(led_strip, 0, 0, 0, 255);
+    // Blue flash for movement - light up all LEDs (10 total: 5 on each side)
+    for (int i = 0; i < 10; i++) {
+        led_strip_set_pixel(led_strip, i, 0, 0, 255);
+    }
     led_strip_refresh(led_strip);
     vTaskDelay(pdMS_TO_TICKS(100));
     led_strip_clear(led_strip);
@@ -87,15 +95,23 @@ static void show_movement_indicator() {
 static void show_mode_indicator() {
     if (!led_strip) return;
     
-    if (current_mode == MODE_ACTOR) {
-        // Purple for actor mode
-        led_strip_set_pixel(led_strip, 0, 255, 0, 255);
-    } else {
-        // Cyan for guest mode
-        led_strip_set_pixel(led_strip, 0, 0, 255, 255);
+    if (current_mode == MODE_START_SCREEN) {
+        // Slow pulsing purple for start screen - light up all LEDs
+        uint32_t time_ms = esp_timer_get_time() / 1000;
+        uint8_t pulse = (sin(time_ms * 0.003) + 1) * 127; // Slow pulse: 0-255
+        for (int i = 0; i < 10; i++) {
+            led_strip_set_pixel(led_strip, i, pulse, 0, pulse);
+        }
+    } else if (current_mode == MODE_ACTOR) {
+        // Purple for actor mode - light up all LEDs
+        for (int i = 0; i < 10; i++) {
+            led_strip_set_pixel(led_strip, i, 255, 0, 255);
+        }
     }
+    // Guest mode: no constant LED, only radiation-based colors
     led_strip_refresh(led_strip);
 }
+
 
 static void update_display() {
     if (!display.getPanel()) return;
@@ -104,95 +120,95 @@ static void update_display() {
     display.setTextColor(TFT_WHITE, TFT_BLACK);
     display.setTextDatum(textdatum_t::middle_center);
     
-    // Title
-    display.setTextSize(2);
-    display.drawString("Actor/Guest Test", display.width()/2, 20);
+    // Start Screen
+    if (current_mode == MODE_START_SCREEN) {
+        // Title
+        display.setTextSize(3);
+        display.setTextColor(TFT_RED, TFT_BLACK);
+        display.drawString("HAUNTED HOUSE", display.width()/2, 80);
+        
+        // Subtitle
+        display.setTextSize(2);
+        display.setTextColor(TFT_ORANGE, TFT_BLACK);
+        display.drawString("Press Middle Button", display.width()/2, 120);
+        display.drawString("to Start", display.width()/2, 145);
+        
+        // Instructions
+        display.setTextSize(1);
+        display.setTextColor(TFT_YELLOW, TFT_BLACK);
+        display.drawString("Radiation levels will start to increase", display.width()/2, 180);
+        display.drawString("Move and shake the device to reduce radiation", display.width()/2, 200);
+        
+        return;
+    }
     
-    // Mode indicator
-    display.setTextSize(2);
+    // Game Screen
     if (current_mode == MODE_ACTOR) {
+        // Actor Mode - Clean Design
+        // Mode indicator
+        display.setTextSize(2);
         display.setTextColor(TFT_MAGENTA, TFT_BLACK);
-        display.drawString("ACTOR MODE", display.width()/2, 45);
-    } else {
-        display.setTextColor(TFT_CYAN, TFT_BLACK);
-        display.drawString("GUEST MODE", display.width()/2, 45);
-    }
-    
-    // Radiation level
-    display.setTextSize(3);
-    display.setTextColor(TFT_WHITE, TFT_BLACK);
-    char radiation_str[32];
-    sprintf(radiation_str, "%d%%", current_radiation);
-    display.drawString(radiation_str, display.width()/2, 75);
-    
-    // Radiation bar
-    int bar_width = (current_radiation * (display.width() - 40)) / 100;
-    if (current_radiation < 33) {
-        display.fillRect(20, 105, bar_width, 20, TFT_GREEN);
-    } else if (current_radiation < 66) {
-        display.fillRect(20, 105, bar_width, 20, TFT_YELLOW);
-    } else {
-        display.fillRect(20, 105, bar_width, 20, TFT_RED);
-    }
-    display.drawRect(20, 105, display.width() - 40, 20, TFT_WHITE);
-    
-    // Statistics
-    display.setTextSize(1);
-    char movement_str[32];
-    sprintf(movement_str, "Movements: %lu", (unsigned long)movement_count);
-    display.drawString(movement_str, display.width()/2, 140);
-    
-    if (current_mode == MODE_GUEST) {
-        char ir_rx_str[32];
-        sprintf(ir_rx_str, "IR Received: %lu", (unsigned long)ir_signals_received);
-        display.drawString(ir_rx_str, display.width()/2, 155);
+        display.drawString("ACTOR MODE", display.width()/2, 30);
         
-        // Cooldown indicator
-        uint32_t time_since_ir = (esp_timer_get_time() / 1000) - last_ir_received_time;
-        if (time_since_ir < GUEST_COOLDOWN_MS) {
-            char cooldown_str[32];
-            sprintf(cooldown_str, "Cooldown: %lus", (unsigned long)(GUEST_COOLDOWN_MS - time_since_ir) / 1000);
-            display.setTextColor(TFT_YELLOW, TFT_BLACK);
-            display.drawString(cooldown_str, display.width()/2, 170);
-            display.setTextColor(TFT_WHITE, TFT_BLACK);
+        // Large radiation amount in center
+        display.setTextSize(4);
+        display.setTextColor(TFT_WHITE, TFT_BLACK);
+        char radiation_str[32];
+        sprintf(radiation_str, "%d", actor_radiation_amount);
+        display.drawString(radiation_str, display.width()/2, 120);
+        
+        // Instructions
+        display.setTextSize(1);
+        display.setTextColor(TFT_YELLOW, TFT_BLACK);
+        display.drawString("Point this device at guest device", display.width()/2, 180);
+        display.drawString("A: decrease radiation, C: increase radiation", display.width()/2, 200);
+        
+        // Button instructions
+        display.setTextColor(TFT_ORANGE, TFT_BLACK);
+        display.drawString("Hold A+C for 5s to switch modes", display.width()/2, 220);
+        display.setTextColor(TFT_WHITE, TFT_BLACK);
+        
+    } else {
+        // Guest Mode - Clean Design
+        // Title
+        display.setTextSize(2);
+        display.setTextColor(TFT_CYAN, TFT_BLACK);
+        display.drawString("RADIATION LEVEL", display.width()/2, 30);
+        
+        // Radiation level
+        display.setTextSize(3);
+        display.setTextColor(TFT_WHITE, TFT_BLACK);
+        char radiation_str[32];
+        sprintf(radiation_str, "%d", current_radiation);
+        display.drawString(radiation_str, display.width()/2, 75);
+        
+        // Radiation bar
+        int bar_width = (current_radiation * (display.width() - 40)) / 100;
+        if (current_radiation < 33) {
+            display.fillRect(20, 105, bar_width, 20, TFT_GREEN);
+        } else if (current_radiation < 66) {
+            display.fillRect(20, 105, bar_width, 20, TFT_YELLOW);
+        } else {
+            display.fillRect(20, 105, bar_width, 20, TFT_RED);
         }
-    } else {
-        char ir_tx_str[32];
-        sprintf(ir_tx_str, "IR Sent: %lu", (unsigned long)ir_signals_sent);
-        display.drawString(ir_tx_str, display.width()/2, 155);
+        display.drawRect(20, 105, display.width() - 40, 20, TFT_WHITE);
         
-        // Show current radiation amount being sent
-        char radiation_amount_str[32];
-        sprintf(radiation_amount_str, "Sending: %d%%", actor_radiation_amount);
-        display.setTextColor(TFT_CYAN, TFT_BLACK);
-        display.drawString(radiation_amount_str, display.width()/2, 170);
+        // Instructions
+        display.setTextSize(1);
+        display.setTextColor(TFT_YELLOW, TFT_BLACK);
+        display.drawString("Move device to reduce radiation", display.width()/2, 180);
+        display.drawString("Point actor device at this device", display.width()/2, 200);
+        
+        // Test status
+        if (test_running) {
+            display.setTextColor(TFT_GREEN, TFT_BLACK);
+            display.drawString("TEST RUNNING", display.width()/2, 220);
+        } else {
+            display.setTextColor(TFT_RED, TFT_BLACK);
+            display.drawString("TEST STOPPED", display.width()/2, 220);
+        }
         display.setTextColor(TFT_WHITE, TFT_BLACK);
     }
-    
-    // Instructions
-    display.setTextColor(TFT_YELLOW, TFT_BLACK);
-    if (current_mode == MODE_GUEST) {
-        display.drawString("Move device to reduce radiation", display.width()/2, 185);
-        display.drawString("Point actor device at this device", display.width()/2, 200);
-    } else {
-        display.drawString("Point this device at guest device", display.width()/2, 185);
-        display.drawString("A: -1% radiation, C: +1% radiation", display.width()/2, 200);
-    }
-    
-    // Button instructions
-    display.setTextColor(TFT_ORANGE, TFT_BLACK);
-    display.drawString("Hold A+C for 5s to switch modes", display.width()/2, 220);
-    display.setTextColor(TFT_WHITE, TFT_BLACK);
-    
-    // Test status
-    if (test_running) {
-        display.setTextColor(TFT_GREEN, TFT_BLACK);
-        display.drawString("TEST RUNNING", display.width()/2, 240);
-    } else {
-        display.setTextColor(TFT_RED, TFT_BLACK);
-        display.drawString("TEST STOPPED", display.width()/2, 240);
-    }
-    display.setTextColor(TFT_WHITE, TFT_BLACK);
 }
 
 // Button handling
@@ -200,10 +216,24 @@ static void check_buttons() {
     static uint32_t last_button_press = 0;
     static bool button_a_was_pressed = false;
     static bool button_c_was_pressed = false;
+    static bool button_middle_was_pressed = false;
     
     bool button_a_pressed = (gpio_get_level((gpio_num_t)BUTTON_A_PIN) == 0);
     bool button_c_pressed = (gpio_get_level((gpio_num_t)BUTTON_C_PIN) == 0);
+    bool button_middle_pressed = (gpio_get_level((gpio_num_t)BUTTON_MIDDLE_PIN) == 0);
     uint32_t current_time = esp_timer_get_time() / 1000;
+    
+    // Handle middle button press (start screen)
+    if (button_middle_pressed && !button_middle_was_pressed && current_time - last_button_press > 200) {
+        if (current_mode == MODE_START_SCREEN) {
+            // Start the game as Guest
+            current_mode = MODE_GUEST;
+            ESP_LOGI(TAG, "Game started! Mode: GUEST");
+            update_display();
+            show_mode_indicator();
+        }
+        last_button_press = current_time;
+    }
     
     // Handle individual button presses (with debouncing)
     if (button_a_pressed && !button_a_was_pressed && current_time - last_button_press > 200) {
@@ -212,7 +242,7 @@ static void check_buttons() {
             if (actor_radiation_amount > MIN_RADIATION) {
                 actor_radiation_amount--;
                 ESP_LOGI(TAG, "Actor radiation decreased to %d%%", actor_radiation_amount);
-                update_display();
+                update_display(); // Only update when radiation changes
             }
         }
         last_button_press = current_time;
@@ -224,14 +254,14 @@ static void check_buttons() {
             if (actor_radiation_amount < MAX_RADIATION) {
                 actor_radiation_amount++;
                 ESP_LOGI(TAG, "Actor radiation increased to %d%%", actor_radiation_amount);
-                update_display();
+                update_display(); // Only update when radiation changes
             }
         }
         last_button_press = current_time;
     }
     
-    // Handle mode switching (both buttons held)
-    if (button_a_pressed && button_c_pressed) {
+    // Handle mode switching (both buttons held) - only in game modes
+    if (button_a_pressed && button_c_pressed && current_mode != MODE_START_SCREEN) {
         if (!buttons_held) {
             buttons_held = true;
             button_hold_start_time = current_time;
@@ -260,11 +290,13 @@ static void check_buttons() {
     // Update button state for next iteration
     button_a_was_pressed = button_a_pressed;
     button_c_was_pressed = button_c_pressed;
+    button_middle_was_pressed = button_middle_pressed;
 }
 
 // Movement callback
 static void movement_callback(bool significant_movement, float movement_magnitude, uint8_t reduction_amount) {
-    if (significant_movement) {
+    // Only process movement in game modes (not start screen)
+    if (significant_movement && current_mode != MODE_START_SCREEN) {
         movement_count++;
         last_movement_time = esp_timer_get_time() / 1000;
         
@@ -367,9 +399,6 @@ static void actor_task_func(void* pvParameters) {
             ESP_LOGW(TAG, "Failed to send IR signal");
         }
         
-        // Update display
-        update_display();
-        
         // Wait before next transmission
         vTaskDelay(pdMS_TO_TICKS(1000)); // Send every second
     }
@@ -389,11 +418,12 @@ extern "C" void actor_guest_test_main(void) {
     } else {
         ESP_LOGI(TAG, "Display initialized");
         display.setRotation(1);
+        
     }
     
     // Initialize buttons
     gpio_config_t button_config = {};
-    button_config.pin_bit_mask = (1ULL << BUTTON_A_PIN) | (1ULL << BUTTON_C_PIN);
+    button_config.pin_bit_mask = (1ULL << BUTTON_A_PIN) | (1ULL << BUTTON_C_PIN) | (1ULL << BUTTON_MIDDLE_PIN);
     button_config.mode = GPIO_MODE_INPUT;
     button_config.pull_up_en = GPIO_PULLUP_ENABLE;
     button_config.pull_down_en = GPIO_PULLDOWN_DISABLE;
@@ -476,12 +506,12 @@ extern "C" void actor_guest_test_main(void) {
         // Check buttons
         check_buttons();
         
-        // Increase radiation for guest mode (2 points per second)
+        // Increase radiation for guest mode (1 point per second) - only in game modes
         if (current_mode == MODE_GUEST) {
             static uint32_t last_radiation_tick = 0;
             if (current_time - last_radiation_tick > 1000) { // Every 1 second
                 if (current_radiation < 100) {
-                    current_radiation += 2; // Increase by 2% every second
+                    current_radiation += 1; // Increase by 1% every second
                     ESP_LOGI(TAG, "📈 Guest radiation increased to %d%%", current_radiation);
                     last_radiation_tick = current_time;
                     
@@ -492,12 +522,16 @@ extern "C" void actor_guest_test_main(void) {
             }
         }
         
-        // Update display every 500ms
-        if (current_time - last_update > 500) {
+        // Update display every 500ms (skip for start screen and actor mode since they're static)
+        if (current_time - last_update > 500 && current_mode == MODE_GUEST) {
             update_display();
             show_radiation_indicator(current_radiation);
-            show_mode_indicator();
             last_update = current_time;
+        }
+        
+        // Update LED indicator for start screen (pulsing effect)
+        if (current_mode == MODE_START_SCREEN) {
+            show_mode_indicator();
         }
         
         // Manage actor task
