@@ -1,214 +1,185 @@
-# Haunted House Game - ESP32 IR Multiplayer
+# 🏚️ Haunted House ESP32 Game
 
-A multiplayer "Haunted House" game for ESP32 devices using IR communication and ESP-NOW for coordination. Players explore a haunted house environment, with IR signals and LED feedback creating an immersive experience.
+A multiplayer radiation survival game for ESP32 devices featuring IR communication, movement detection, and dynamic gameplay mechanics.
 
-## 🎮 Game Modes
+## 🎮 Game Overview
 
-### Mode A (Downlink)
-- **IR Direction**: HOLDER transmits IR beacons → RUNNERS receive IR
-- **ESP-NOW**: RUNNERS send `PASS_REQ` → HOLDER grants pass
-- **Architecture**: Robust implementation with test harness integration
+This ESP32-based haunted house game creates an immersive multiplayer experience where players must manage radiation levels through movement and strategic IR communication.
 
-### Mode B (Uplink) 
-- **IR Direction**: RUNNERS transmit IR uplinks → HOLDER receives IR
-- **ESP-NOW**: HOLDER broadcasts IR windows → RUNNERS respond with IR
-- **Architecture**: Original implementation with proven stability
+### 🎯 Core Features
 
-## 🛠️ Hardware Requirements
+- **Dual Mode System**: Switch between Guest and Actor roles
+- **IR Communication**: Wireless signal transmission between devices
+- **Movement Detection**: Accelerometer-based radiation reduction
+- **Dynamic Radiation**: Automatic increase with manual reduction options
+- **Visual Feedback**: LED strips and display updates
+- **Audio Support**: Sound effects and alerts
 
-- **ESP32 device** (M5Stack FIRE recommended)
-- **IR LED** (connected to GPIO 26 for transmission)
-- **IR Receiver** (connected to GPIO 36 for reception, demodulated to UART)
-- **Side LEDs** (WS2812/SK6812 on GPIO 15 for visual feedback)
-- **USB cable** for programming and power
+## 🎲 Game Modes
 
-## 📋 Prerequisites
+### 👻 Guest Mode
+- **Automatic Radiation Increase**: +2% every second
+- **IR Signal Reception**: Receive radiation from actor devices
+- **Movement Detection**: Shake device to reduce radiation by 1%
+- **Cooldown Protection**: 2-second cooldown between IR signals
 
-1. **ESP-IDF v5.3.3** installed and configured
-2. **Python 3.7+** (comes with ESP-IDF)
-3. **Git** for cloning the repository
+### 🎭 Actor Mode
+- **IR Signal Transmission**: Continuously sends IR signals
+- **Adjustable Radiation**: Press A (-1%) or C (+1%) to adjust radiation amount (1-20%)
+- **Mode Switching**: Hold A+C for 5 seconds to switch between modes
 
-## 🚀 Quick Start
+## 🎮 Controls
 
-### 1. Clone the Repository
-```bash
-git clone <your-repo-url>
-cd haunted_house
-```
+| Button | Action |
+|--------|--------|
+| **A** | Decrease radiation (Actor mode) |
+| **C** | Increase radiation (Actor mode) |
+| **A + C** (Hold 5s) | Switch between Guest/Actor modes |
+| **Device Shake** | Reduce radiation by 1% (Guest mode) |
 
-### 2. Install Dependencies
+## 🔧 Technical Features
 
-#### Option A: Using Setup Script (Recommended)
-```bash
-# Windows
-setup.bat
-```
+### 🛡️ Robust Communication
+- **CRC-8 Validation**: Ensures packet integrity
+- **MAC Address Filtering**: Prevents self-reception
+- **Payload Length Validation**: Prevents buffer overruns
+- **Error Handling**: Comprehensive logging and recovery
 
-#### Option B: Manual Setup
-```bash
-idf.py reconfigure
-```
+### 📡 IR Protocol
+- **Preamble**: "ZT" synchronization
+- **Packet Structure**: Length, Sequence, MAC, Payload, CRC
+- **Transmission**: RMT-based IR LED control
+- **Reception**: UART-based IR sensor input
 
-### 3. Build and Flash
+### 🎯 Hardware Integration
+- **M5Stack Core**: ESP32-based development board
+- **MPU6886**: Accelerometer for movement detection
+- **IR LED/Sensor**: Wireless communication
+- **LED Strip**: Visual feedback
+- **Speaker**: Audio output
 
-#### Mode A (Downlink) - Recommended
-```bash
-# HOST device (opens join window, coordinates countdown)
-idf.py -DCMAKE_CXX_FLAGS="-DZT_IS_HOST=1" build flash
+## 🚀 Getting Started
 
-# PEER device (joins existing network)
-idf.py -DCMAKE_CXX_FLAGS="-DZT_IS_HOST=0" build flash
-```
+### Prerequisites
+- ESP-IDF v5.3.3 or later
+- M5Stack Core device
+- IR LED and sensor components
 
-#### Mode B (Uplink)
-```bash
-# HOST device
-idf.py -DCMAKE_CXX_FLAGS="-DHP_TEST_UPLINK=1 -DZT_IS_HOST=1" build flash
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/RyanDeSummers/haunted_house.git
+   cd haunted_house
+   ```
 
-# PEER device
-idf.py -DCMAKE_CXX_FLAGS="-DHP_TEST_UPLINK=1 -DZT_IS_HOST=0" build flash
-```
+2. Build the project:
+   ```bash
+   idf.py build
+   ```
 
-### 4. Monitor Output
-```bash
-idf.py monitor
-```
+3. Flash to device:
+   ```bash
+   idf.py flash
+   ```
 
-## 🎯 How to Play
-
-1. **Setup**: Connect your ESP32 devices and power them on
-2. **Discovery**: HOST device opens a join window, PEER devices connect
-3. **Countdown**: All devices show synchronized 3-2-1 countdown
-4. **Role Assignment**: One random device becomes HOLDER (red LEDs), others become RUNNERS
-5. **Gameplay**: 
-   - HOLDER has the "potato" (red LEDs on)
-   - RUNNERS try to claim it by pointing their IR receiver at the HOLDER
-   - When IR is detected, a pass request is sent via ESP-NOW
-   - First valid request wins and roles switch
-6. **Cooldown**: 1000ms cooldown prevents immediate passback
-
-## 🔧 Build Configuration
-
-### Mode Selection
-- **Mode A (Default)**: `ir_downlink_test_main()` - HOLDER TX IR, RUNNERS RX IR
-- **Mode B**: `ir_uplink_test_main()` - RUNNERS TX IR, HOLDER RX IR
-
-### Host/Peer Configuration
-- **HOST**: `-DZT_IS_HOST=1` - Opens join window, coordinates countdown
-- **PEER**: `-DZT_IS_HOST=0` - Joins existing network
-
-### Complete Build Examples
-```bash
-# Mode A - HOST
-idf.py -DCMAKE_CXX_FLAGS="-DZT_IS_HOST=1" build flash monitor
-
-# Mode A - PEER  
-idf.py -DCMAKE_CXX_FLAGS="-DZT_IS_HOST=0" build flash monitor
-
-# Mode B - HOST
-idf.py -DCMAKE_CXX_FLAGS="-DHP_TEST_UPLINK=1 -DZT_IS_HOST=1" build flash monitor
-
-# Mode B - PEER
-idf.py -DCMAKE_CXX_FLAGS="-DHP_TEST_UPLINK=1 -DZT_IS_HOST=0" build flash monitor
-```
+### Configuration
+- Modify `sdkconfig` for hardware-specific settings
+- Adjust movement sensitivity in `movement_handler.cpp`
+- Configure IR transmission power in `IR_handler.cpp`
 
 ## 📁 Project Structure
 
 ```
 haunted_house/
 ├── main/
-│   ├── main.cpp                 # Entry point (mode selection)
-│   ├── ir_downlink_test.cpp     # Mode A implementation
-│   ├── ir_uplink_test.cpp       # Mode B implementation
-│   ├── zt_test_mode.cpp         # Test harness (discovery/countdown)
-│   ├── ir_simple_test.h         # Common constants and macros
-│   ├── game_logic.cpp           # Game state management
-│   ├── SoundManager.cpp         # Audio feedback
-│   └── CMakeLists.txt           # Build configuration
-├── components/                  # Custom components (if any)
-├── CMakeLists.txt              # Project configuration
-├── sdkconfig                   # ESP-IDF configuration
-├── setup.bat                   # Setup script (Windows)
-└── README.md                   # This file
+│   ├── actor_guest_test.cpp    # Main game logic
+│   ├── actor_guest_test.h      # Game header
+│   ├── IR_handler.cpp          # IR communication
+│   ├── IR_handler.h            # IR protocol definitions
+│   ├── movement_handler.cpp    # Accelerometer handling
+│   ├── movement_handler.h      # Movement detection API
+│   ├── SoundManager.cpp        # Audio system
+│   ├── SoundManager.hpp        # Sound header
+│   └── main.cpp               # Application entry point
+├── components/
+│   └── M5GFX/                  # Display graphics library
+├── managed_components/
+│   └── espressif__led_strip/   # LED control
+└── CMakeLists.txt              # Build configuration
 ```
 
-## 🔍 Key Features
+## 🎯 Game Flow
 
-- **Test Harness**: Automatic device discovery and synchronized countdown
-- **Cooldown System**: Prevents rapid back-and-forth passing
-- **Robust IR Parsing**: Ring buffer handles split UART reads
-- **ESP-NOW Handshake**: Reliable pass acknowledgment
-- **LED Feedback**: Visual indication of current role
-- **UI Consistency**: Same countdown and role displays across modes
-- **Error Recovery**: Handles network disconnections and reconnections
+1. **Device starts as Guest** - radiation increases automatically
+2. **Guest receives IR signals** - adds radiation from actors
+3. **Guest shakes device** - reduces radiation through movement
+4. **Hold A+C for 5 seconds** - switches to Actor mode
+5. **Actor sends IR signals** - with adjustable radiation amount
+6. **Actor adjusts radiation** - using A/C buttons (1-20% range)
 
-## 🐛 Troubleshooting
+## 🔧 Development
 
-### Common Issues
+### Building
+```bash
+idf.py build
+```
 
-1. **Build Errors**
-   - Ensure ESP-IDF v5.3.3 is installed and sourced
-   - Run `idf.py reconfigure` to install dependencies
-   - Check that all source files are included in `main/CMakeLists.txt`
+### Flashing
+```bash
+idf.py flash
+```
 
-2. **No IR Communication**
-   - Verify IR LED is connected to GPIO 26
-   - Verify IR receiver is connected to GPIO 36
-   - Check IR LED polarity and power supply
-   - Ensure devices are within line-of-sight
-
-3. **ESP-NOW Issues**
-   - Ensure devices are on the same WiFi channel (default: channel 1)
-   - Check that MAC addresses are being read correctly
-   - Verify broadcast peer is added successfully
-
-4. **LED Issues**
-   - Verify WS2812/SK6812 LEDs are connected to GPIO 15
-   - Check power supply (5V for most LED strips)
-   - Ensure correct number of LEDs in `HP_LED_COUNT`
-
-### Debug Output
-Monitor the serial output for detailed logs:
+### Monitoring
 ```bash
 idf.py monitor
 ```
 
-Look for:
-- `IR beacon sent (SEQ=X)` - IR transmission working
-- `BEACON ok: seq=X from XX:XX:XX:XX:XX:XX` - IR reception working
-- `GRANT -> XX:XX:XX:XX:XX:XX seq=X` - Pass requests working
-- `ROLE -> HOLDER/RUNNER` - Role transitions working
+### Clean Build
+```bash
+idf.py fullclean
+idf.py build
+```
 
-## 📝 Configuration
+## 📊 Performance
 
-### IR Settings (`ir_simple_test.h`)
-- `BEACON_PERIOD_MS`: IR beacon transmission interval (default: 300ms)
-- `PASS_COOLDOWN_MS`: Cooldown between passes (default: 1000ms)
-- `IR_BAUD`: UART baud rate for IR reception (default: 2400)
-- `ESPNOW_CHANNEL`: WiFi channel for ESP-NOW (default: 1)
+- **Build Size**: ~360KB (64% free space)
+- **Memory Usage**: Optimized for ESP32 constraints
+- **IR Range**: ~2-3 meters (depending on environment)
+- **Battery Life**: Hours of continuous gameplay
 
-### LED Settings
-- `HP_LED_GPIO`: GPIO pin for LED strip (default: 15)
-- `HP_LED_COUNT`: Number of LEDs in strip (default: 10)
+## 🐛 Troubleshooting
+
+### Common Issues
+- **IR signals not received**: Check CRC validation settings
+- **Movement not detected**: Adjust sensitivity threshold
+- **Build errors**: Ensure ESP-IDF v5.3.3+ is installed
+- **Flash failures**: Check USB connection and drivers
+
+### Debug Mode
+Enable debug logging by modifying log levels in `sdkconfig`:
+```
+CONFIG_LOG_DEFAULT_LEVEL_DEBUG=y
+```
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test thoroughly with multiple devices
+4. Test thoroughly
 5. Submit a pull request
 
 ## 📄 License
 
-[Add your license information here]
+This project is open source. See individual component licenses for details.
 
-## 🙏 Acknowledgments
+## 🎉 Acknowledgments
 
-- ESP-IDF team for the excellent development framework
-- M5Stack for the FIRE board design
-- ESP-NOW and RMT peripheral documentation
+- **M5Stack** for the development platform
+- **ESP-IDF** for the framework
+- **M5GFX** for display graphics
+- **Espressif** for LED strip components
 
 ---
 
-**Happy gaming! 🥔✨**
+**Happy Haunting! 👻🎮**
