@@ -1,7 +1,11 @@
 #include "actor_guest_test.h"
 #include "movement_handler.h"
 #include "IR_handler.h"
+#include "SoundManager.hpp"
+#include "espnow_handler.h"
 #include "esp_log.h"
+#include "esp_random.h"
+#include <inttypes.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_timer.h"
@@ -13,11 +17,103 @@
 #include <cstring>
 #include <cmath>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 static const char* TAG = "ACTOR_GUEST_TEST";
+
+
+// --- Soft status tone scheduler ---
+static uint32_t tone_next_ms = 0;
+static uint8_t  tone_phase   = 0; // for multi-beat patterns
+static uint8_t  last_zone    = 0; // 0=green,1=yellow,2=red
+
+static inline uint8_t radiation_zone(uint8_t r){
+    return (r < 33) ? 0 : (r < 66) ? 1 : 2;
+}
 
 // External objects from main.cpp
 extern M5GFX display;
 extern led_strip_handle_t led_strip;
+extern SoundManager speaker;
+
+// ---- Non-blocking LED hit effect (red pulsing overlay) ----
+static uint32_t ledfx_hit_next_ms = 0;
+static uint8_t  ledfx_hit_phase   = 0; // 0=idle, 1=active
+
+// Forward declarations
+static inline bool ledfx_is_active();
+static inline bool actorfx_is_active();
+
+static void ledfx_trigger_hit() {
+    ledfx_hit_phase   = 1;
+    ledfx_hit_next_ms = (esp_timer_get_time() / 1000); // start now
+}
+
+// Helper: is any hit overlay active right now?
+static inline bool ledfx_is_active() {
+    if (ledfx_hit_phase == 0) return false;
+    const uint32_t now = esp_timer_get_time() / 1000;
+    // Guard the same window ledfx_tick() uses (~700 ms)
+    return (int32_t)(now - ledfx_hit_next_ms) < 700;
+}
+
+static void ledfx_tick() {
+    if (!led_strip || ledfx_hit_phase == 0) return;
+    const uint32_t now = esp_timer_get_time() / 1000;
+    
+    // Create pulsing red effect during hit animation
+    if (ledfx_hit_phase > 0) {
+        // Fast pulsing red (2x the rate of red radiation zone for urgency)
+        uint8_t pulse = (sin(now * 0.012) + 1) * 127; // Fast pulse: 0-255 (2x red zone rate)
+        for (int i = 0; i < 10; ++i) {
+            led_strip_set_pixel(led_strip, i, pulse, 0, 0);
+        }
+        led_strip_refresh(led_strip);
+        
+        // Check if hit animation duration is complete (~700ms to match alarm sound)
+        if ((int32_t)(now - ledfx_hit_next_ms) >= 700) {
+            ledfx_hit_phase = 0; // End hit effect
+            led_strip_clear(led_strip);
+            led_strip_refresh(led_strip);
+        }
+    }
+}
+
+// Status tone scheduler - non-blocking modern sounds based on radiation level
+static void status_tone_scheduler(uint8_t rad)
+{
+    const uint32_t now = esp_timer_get_time() / 1000;
+    const uint8_t z = radiation_zone(rad);
+
+    // Reset pattern when zone changes
+    if (z != last_zone) { tone_phase = 0; tone_next_ms = now; last_zone = z; }
+
+    if ((int32_t)(now - tone_next_ms) < 0) return; // wait
+
+    switch (z) {
+        case 0: { // GREEN: single soft thump every ~2s
+            speaker.playGreenTone();
+            tone_next_ms = now + 2000;
+            tone_phase = 0;
+        } break;
+
+        case 1: { // YELLOW: double blip, then rest
+            if (tone_phase == 0) {
+                speaker.playYellowWarning();   // queues the pair inside SM
+                tone_next_ms = now + 1200;    // rest until next pair
+                tone_phase = 0;
+            }
+        } break;
+
+        case 2: { // RED: low siren sweep, repeat faster
+            speaker.playRedSiren();            // one 700ms sweep
+            tone_next_ms = now + 900;         // short rest to loop
+            tone_phase = 0;
+        } break;
+    }
+}
 
 // Button configuration
 #define BUTTON_A_PIN 39
@@ -27,7 +123,7 @@ extern led_strip_handle_t led_strip;
 
 // Test configuration
 #define RADIATION_PER_SIGNAL 10
-#define GUEST_COOLDOWN_MS 2000
+#define GUEST_COOLDOWN_MS 5000
 #define MIN_RADIATION 1
 #define MAX_RADIATION 20
 
@@ -51,65 +147,161 @@ static bool buttons_held = false;
 static uint32_t button_hold_start_time = 0;
 static uint8_t self_mac[6] = {0};  // Device's own MAC address
 static uint8_t actor_radiation_amount = RADIATION_PER_SIGNAL;  // Current radiation amount for actor
+static bool actor_signal_active = false;  // Track if actor is actively sending IR signals
+static uint16_t actor_hit_count = 0;  // Track successful hits on guests
 
 
 // Visual indicator functions
 static void show_radiation_indicator(uint8_t radiation) {
     if (!led_strip) return;
+    // If a hit overlay is active, skip baseline radiation LEDs this frame.
+    if (ledfx_is_active() || actorfx_is_active()) return;
     
-    // Color based on radiation level
-    uint8_t red = 0, green = 0, blue = 0;
+    uint32_t time_ms = esp_timer_get_time() / 1000;
     
     if (radiation < 33) {
-        // Green - low radiation
-        green = 255;
+        // Green - low radiation (solid)
+        for (int i = 0; i < 10; i++) {
+            led_strip_set_pixel(led_strip, i, 0, 255, 0);
+        }
+        led_strip_refresh(led_strip);
+        
     } else if (radiation < 66) {
-        // Yellow - medium radiation
-        red = 255;
-        green = 255;
+        // Yellow - medium radiation (slow pulsing like menu)
+        uint8_t pulse = (sin(time_ms * 0.003) + 1) * 127; // Slow pulse: 0-255
+        for (int i = 0; i < 10; i++) {
+            led_strip_set_pixel(led_strip, i, pulse, pulse, 0);
+        }
+        led_strip_refresh(led_strip);
+        
     } else {
-        // Red - high radiation
-        red = 255;
+        // Red - high radiation (fast pulsing, twice the rate of yellow)
+        uint8_t pulse = (sin(time_ms * 0.006) + 1) * 127; // Fast pulse: 0-255 (2x yellow rate)
+        for (int i = 0; i < 10; i++) {
+            led_strip_set_pixel(led_strip, i, pulse, 0, 0);
+        }
+        led_strip_refresh(led_strip);
     }
-    
-    // Light up all LEDs in the strip (10 total: 5 on each side)
-    for (int i = 0; i < 10; i++) {
-        led_strip_set_pixel(led_strip, i, red, green, blue);
-    }
-    led_strip_refresh(led_strip);
 }
 
 static void show_movement_indicator() {
-    if (!led_strip) return;
-    
-    // Blue flash for movement - light up all LEDs (10 total: 5 on each side)
-    for (int i = 0; i < 10; i++) {
-        led_strip_set_pixel(led_strip, i, 0, 0, 255);
-    }
-    led_strip_refresh(led_strip);
-    vTaskDelay(pdMS_TO_TICKS(100));
-    led_strip_clear(led_strip);
-    led_strip_refresh(led_strip);
+    // No-op here; consider adding a non-blocking blue pulse similar to ledfx_* if desired.
 }
 
 static void show_mode_indicator() {
     if (!led_strip) return;
+    // If a hit overlay is active, skip mode LED for this frame.
+    if (ledfx_is_active() || actorfx_is_active()) return;
     
     if (current_mode == MODE_START_SCREEN) {
-        // Slow pulsing purple for start screen - light up all LEDs
+        // Slow pulsing yellow for start screen - light up all LEDs
         uint32_t time_ms = esp_timer_get_time() / 1000;
         uint8_t pulse = (sin(time_ms * 0.003) + 1) * 127; // Slow pulse: 0-255
         for (int i = 0; i < 10; i++) {
-            led_strip_set_pixel(led_strip, i, pulse, 0, pulse);
+            led_strip_set_pixel(led_strip, i, pulse, pulse, 0);
         }
     } else if (current_mode == MODE_ACTOR) {
-        // Purple for actor mode - light up all LEDs
+        // Purple strobe for actor mode - fast pulsing effect
+        uint32_t time_ms = esp_timer_get_time() / 1000;
+        uint8_t strobe = (sin(time_ms * 0.02) + 1) * 127; // Fast strobe: 0-255
         for (int i = 0; i < 10; i++) {
-            led_strip_set_pixel(led_strip, i, 255, 0, 255);
+            led_strip_set_pixel(led_strip, i, strobe, 0, strobe);
         }
     }
     // Guest mode: no constant LED, only radiation-based colors
     led_strip_refresh(led_strip);
+}
+
+
+// -------- Non-blocking ACTOR hit-confirm overlay (green flashes) --------
+static uint8_t  actorfx_phase      = 0;     // 0=idle, 1=on#1, 2=off#1, 3=on#2, 4=off#2
+static uint32_t actorfx_next_ms    = 0;
+static bool     actorfx_sound_arm  = false; // play sound at start from main loop
+
+static inline bool actorfx_is_active() {
+    return actorfx_phase != 0;
+}
+
+static void actorfx_trigger_hit_confirm() {
+    actorfx_phase     = 1;
+    actorfx_next_ms   = (esp_timer_get_time() / 1000);
+    actorfx_sound_arm = true;  // let the main loop play the sound safely
+    ESP_LOGI(TAG, "✅ Actor FX armed");
+}
+
+static void actorfx_tick() {
+    if (!led_strip || actorfx_phase == 0) return;
+    const uint32_t now = esp_timer_get_time() / 1000;
+    if ((int32_t)(now - actorfx_next_ms) < 0) return;
+
+    // Fire sound once, at overlay start (safe context)
+    if (actorfx_sound_arm) {
+        ESP_LOGI(TAG, "🔊 Actor confirm sound");
+        actorfx_sound_arm = false;
+        // Bright two-note confirm (queued to sound task; non-blocking)
+        speaker.playActorHitConfirm();
+    }
+
+    switch (actorfx_phase) {
+        case 1: // ON #1 (80 ms)
+            for (int i = 0; i < 10; ++i) led_strip_set_pixel(led_strip, i, 0, 255, 0);
+            led_strip_refresh(led_strip);
+            actorfx_next_ms = now + 80;
+            actorfx_phase   = 2;
+            break;
+        case 2: // OFF #1 (40 ms)
+            led_strip_clear(led_strip);
+            led_strip_refresh(led_strip);
+            actorfx_next_ms = now + 40;
+            actorfx_phase   = 3;
+            break;
+        case 3: // ON #2 (80 ms)
+            for (int i = 0; i < 10; ++i) led_strip_set_pixel(led_strip, i, 0, 255, 0);
+            led_strip_refresh(led_strip);
+            actorfx_next_ms = now + 80;
+            actorfx_phase   = 4;
+            break;
+        case 4: // OFF #2 and done
+            led_strip_clear(led_strip);
+            led_strip_refresh(led_strip);
+            actorfx_phase = 0;
+            break;
+    }
+}
+
+// ESP-NOW callback for received packets
+static void espnow_rx_callback(const espnow_packet_t* packet) {
+    ESP_LOGI(TAG, "📡 ESP-NOW RX: type=0x%02X, from=%02X:%02X:%02X:%02X:%02X:%02X",
+             packet->type,
+             packet->sender_mac[0], packet->sender_mac[1], packet->sender_mac[2],
+             packet->sender_mac[3], packet->sender_mac[4], packet->sender_mac[5]);
+    
+    // Filter out packets sent by self
+    if (espnow_mac_equal(packet->sender_mac, self_mac)) {
+        ESP_LOGI(TAG, "Ignoring ESP-NOW packet from self");
+        return;
+    }
+    
+    // Handle different packet types
+    switch (packet->type) {
+        case ESPNOW_IR_HIT_ACK:
+            // Guest acknowledged our IR hit - show feedback in actor mode
+            if (current_mode == MODE_ACTOR) {
+                actor_hit_count++;  // Increment hit counter
+                ESP_LOGI(TAG, "🎯 Received IR hit acknowledgment from guest! Total hits: %d", actor_hit_count);
+                // DO NOT block / draw LEDs here; defer to main loop
+                actorfx_trigger_hit_confirm();
+            }
+            break;
+            
+        case ESPNOW_HEARTBEAT:
+            ESP_LOGD(TAG, "💓 Received heartbeat");
+            break;
+            
+        default:
+            ESP_LOGW(TAG, "Unknown ESP-NOW packet type: 0x%02X", packet->type);
+            break;
+    }
 }
 
 
@@ -122,22 +314,19 @@ static void update_display() {
     
     // Start Screen
     if (current_mode == MODE_START_SCREEN) {
+        // Black background
+        display.fillScreen(TFT_BLACK);
+        
         // Title
         display.setTextSize(3);
         display.setTextColor(TFT_RED, TFT_BLACK);
-        display.drawString("HAUNTED HOUSE", display.width()/2, 80);
+        display.drawString("BIOHAZARD", display.width()/2, 100);
         
         // Subtitle
         display.setTextSize(2);
-        display.setTextColor(TFT_ORANGE, TFT_BLACK);
-        display.drawString("Press Middle Button", display.width()/2, 120);
-        display.drawString("to Start", display.width()/2, 145);
-        
-        // Instructions
-        display.setTextSize(1);
-        display.setTextColor(TFT_YELLOW, TFT_BLACK);
-        display.drawString("Radiation levels will start to increase", display.width()/2, 180);
-        display.drawString("Move and shake the device to reduce radiation", display.width()/2, 200);
+        display.setTextColor(TFT_WHITE, TFT_BLACK);
+        display.drawString("Press Middle Button", display.width()/2, 140);
+        display.drawString("to Start", display.width()/2, 165);
         
         return;
     }
@@ -150,12 +339,29 @@ static void update_display() {
         display.setTextColor(TFT_MAGENTA, TFT_BLACK);
         display.drawString("ACTOR MODE", display.width()/2, 30);
         
+        // Signal status indicator
+        display.setTextSize(1);
+        if (actor_signal_active) {
+            display.setTextColor(TFT_GREEN, TFT_BLACK);
+            display.drawString("SIGNAL ACTIVE", display.width()/2, 55);
+        } else {
+            display.setTextColor(TFT_RED, TFT_BLACK);
+            display.drawString("SIGNAL INACTIVE", display.width()/2, 55);
+        }
+        
         // Large radiation amount in center
         display.setTextSize(4);
         display.setTextColor(TFT_WHITE, TFT_BLACK);
         char radiation_str[32];
         sprintf(radiation_str, "%d", actor_radiation_amount);
         display.drawString(radiation_str, display.width()/2, 120);
+        
+        // Hit counter below radiation
+        display.setTextSize(2);
+        display.setTextColor(TFT_CYAN, TFT_BLACK);
+        char hit_str[32];
+        sprintf(hit_str, "HITS: %d", actor_hit_count);
+        display.drawString(hit_str, display.width()/2, 160);
         
         // Instructions
         display.setTextSize(1);
@@ -165,48 +371,34 @@ static void update_display() {
         
         // Button instructions
         display.setTextColor(TFT_ORANGE, TFT_BLACK);
-        display.drawString("Hold A+C for 5s to switch modes", display.width()/2, 220);
+        display.drawString("Hold A 2s: Reset Hits", display.width()/2, 220);
+        display.drawString("Hold A+C 5s: Switch Modes", display.width()/2, 235);
         display.setTextColor(TFT_WHITE, TFT_BLACK);
         
     } else {
         // Guest Mode - Clean Design
-        // Title
+        // Title with color-coded radiation level
         display.setTextSize(2);
-        display.setTextColor(TFT_CYAN, TFT_BLACK);
-        display.drawString("RADIATION LEVEL", display.width()/2, 30);
-        
-        // Radiation level
-        display.setTextSize(3);
-        display.setTextColor(TFT_WHITE, TFT_BLACK);
-        char radiation_str[32];
-        sprintf(radiation_str, "%d", current_radiation);
-        display.drawString(radiation_str, display.width()/2, 75);
+        if (current_radiation < 33) {
+            display.setTextColor(TFT_GREEN, TFT_BLACK);
+        } else if (current_radiation < 66) {
+            display.setTextColor(TFT_YELLOW, TFT_BLACK);
+        } else {
+            display.setTextColor(TFT_RED, TFT_BLACK);
+        }
+        display.drawString("RADIATION LEVEL", display.width()/2, 50);
         
         // Radiation bar
         int bar_width = (current_radiation * (display.width() - 40)) / 100;
         if (current_radiation < 33) {
-            display.fillRect(20, 105, bar_width, 20, TFT_GREEN);
+            display.fillRect(20, 80, bar_width, 20, TFT_GREEN);
         } else if (current_radiation < 66) {
-            display.fillRect(20, 105, bar_width, 20, TFT_YELLOW);
+            display.fillRect(20, 80, bar_width, 20, TFT_YELLOW);
         } else {
-            display.fillRect(20, 105, bar_width, 20, TFT_RED);
+            display.fillRect(20, 80, bar_width, 20, TFT_RED);
         }
-        display.drawRect(20, 105, display.width() - 40, 20, TFT_WHITE);
+        display.drawRect(20, 80, display.width() - 40, 20, TFT_WHITE);
         
-        // Instructions
-        display.setTextSize(1);
-        display.setTextColor(TFT_YELLOW, TFT_BLACK);
-        display.drawString("Move device to reduce radiation", display.width()/2, 180);
-        display.drawString("Point actor device at this device", display.width()/2, 200);
-        
-        // Test status
-        if (test_running) {
-            display.setTextColor(TFT_GREEN, TFT_BLACK);
-            display.drawString("TEST RUNNING", display.width()/2, 220);
-        } else {
-            display.setTextColor(TFT_RED, TFT_BLACK);
-            display.drawString("TEST STOPPED", display.width()/2, 220);
-        }
         display.setTextColor(TFT_WHITE, TFT_BLACK);
     }
 }
@@ -246,6 +438,24 @@ static void check_buttons() {
             }
         }
         last_button_press = current_time;
+    }
+    
+    // Handle button A hold (reset hit counter) - only in actor mode
+    static bool button_a_held = false;
+    static uint32_t button_a_hold_start = 0;
+    if (button_a_pressed && current_mode == MODE_ACTOR) {
+        if (!button_a_held) {
+            button_a_held = true;
+            button_a_hold_start = current_time;
+        } else if (current_time - button_a_hold_start > 2000) { // 2 second hold
+            // Reset hit counter
+            actor_hit_count = 0;
+            ESP_LOGI(TAG, "Hit counter reset to 0");
+            update_display();
+            button_a_hold_start = current_time; // Reset timer to prevent spam
+        }
+    } else {
+        button_a_held = false;
     }
     
     if (button_c_pressed && !button_c_was_pressed && current_time - last_button_press > 200) {
@@ -295,8 +505,8 @@ static void check_buttons() {
 
 // Movement callback
 static void movement_callback(bool significant_movement, float movement_magnitude, uint8_t reduction_amount) {
-    // Only process movement in game modes (not start screen)
-    if (significant_movement && current_mode != MODE_START_SCREEN) {
+    // Only process movement in guest mode (not start screen or actor mode)
+    if (significant_movement && current_mode == MODE_GUEST) {
         movement_count++;
         last_movement_time = esp_timer_get_time() / 1000;
         
@@ -376,6 +586,27 @@ static void ir_rx_callback(const ir_packet_t* packet, uint8_t rssi) {
     ESP_LOGI(TAG, "📡 IR signal received! Adding %d%% radiation, new total: %d%%", 
              radiation_to_add, current_radiation);
     
+    // IR Hit Effect: play short alarm whoop (own task) + trigger LED flashes
+    speaker.hit_alarm_whoop();
+    ledfx_trigger_hit();
+    
+    // Send ESP-NOW acknowledgment back to actor
+    if (espnow_is_initialized()) {
+        ESP_LOGI(TAG, "ACK target(actor)=%02X:%02X:%02X:%02X:%02X:%02X  self(guest)=%02X:%02X:%02X:%02X:%02X:%02X",
+                 packet->sender_mac[0], packet->sender_mac[1], packet->sender_mac[2],
+                 packet->sender_mac[3], packet->sender_mac[4], packet->sender_mac[5],
+                 self_mac[0], self_mac[1], self_mac[2], self_mac[3], self_mac[4], self_mac[5]);
+        
+        esp_err_t ack_ret = espnow_send_ir_hit_ack(packet->sender_mac, self_mac);
+        if (ack_ret == ESP_OK) {
+            ESP_LOGI(TAG, "📡 ESP-NOW acknowledgment sent to actor");
+        } else {
+            ESP_LOGW(TAG, "📡 Failed to send ESP-NOW acknowledgment: %s", esp_err_to_name(ack_ret));
+        }
+    } else {
+        ESP_LOGW(TAG, "📡 ESP-NOW not initialized, cannot send acknowledgment");
+    }
+    
     // Visual feedback
     update_display();
     show_radiation_indicator(current_radiation);
@@ -386,6 +617,9 @@ static void actor_task_func(void* pvParameters) {
     ESP_LOGI(TAG, "Actor task started");
     
     while (test_running && current_mode == MODE_ACTOR) {
+        // Set signal active status
+        actor_signal_active = true;
+        
         // Create IR packet with radiation value using proper function
         ir_packet_t packet;
         uint8_t radiation_data[] = {actor_radiation_amount};
@@ -397,12 +631,18 @@ static void actor_task_func(void* pvParameters) {
             ESP_LOGI(TAG, "📡 IR signal sent with %d%% radiation", actor_radiation_amount);
         } else {
             ESP_LOGW(TAG, "Failed to send IR signal");
+            actor_signal_active = false;
         }
+        
+        // Update display to show signal status
+        update_display();
         
         // Wait before next transmission
         vTaskDelay(pdMS_TO_TICKS(1000)); // Send every second
     }
     
+    // Clear signal status when task ends
+    actor_signal_active = false;
     ESP_LOGI(TAG, "Actor task ended");
     vTaskDelete(nullptr);
 }
@@ -469,6 +709,18 @@ extern "C" void actor_guest_test_main(void) {
     ir_set_rx_callback(ir_rx_callback);
     ir_set_reception_enabled(true);  // Enable IR reception!
     
+    // Initialize ESP-NOW handler
+    ESP_LOGI(TAG, "Initializing ESP-NOW Handler...");
+    esp_err_t espnow_ret = espnow_handler_init();
+    if (espnow_ret != ESP_OK) {
+        ESP_LOGE(TAG, "❌ Failed to initialize ESP-NOW handler: %s", esp_err_to_name(espnow_ret));
+        return;
+    }
+    
+    // Set up ESP-NOW callback
+    espnow_set_rx_callback(espnow_rx_callback);
+    ESP_LOGI(TAG, "✅ ESP-NOW handler initialized and callback set");
+    
     test_running = true;
     current_radiation = 0;
     movement_count = 0;
@@ -520,6 +772,9 @@ extern "C" void actor_guest_test_main(void) {
                     show_radiation_indicator(current_radiation);
                 }
             }
+            
+            // --- Drive the status tones without blocking (green/yellow/red) ---
+            // status_tone_scheduler(current_radiation); // Disabled for now
         }
         
         // Update display every 500ms (skip for start screen and actor mode since they're static)
@@ -529,10 +784,17 @@ extern "C" void actor_guest_test_main(void) {
             last_update = current_time;
         }
         
-        // Update LED indicator for start screen (pulsing effect)
-        if (current_mode == MODE_START_SCREEN) {
+        // Update LED indicator for all modes (pulsing/strobe effects)
+        if (current_mode == MODE_START_SCREEN || current_mode == MODE_ACTOR) {
             show_mode_indicator();
+        } else if (current_mode == MODE_GUEST) {
+            // Continuous LED updates for smooth pulsing in guest mode
+            show_radiation_indicator(current_radiation);
         }
+        
+        // Draw overlays LAST so they can't be overwritten this frame.
+        ledfx_tick();
+        actorfx_tick();
         
         // Manage actor task
         if (current_mode == MODE_ACTOR && actor_task == nullptr) {
@@ -562,6 +824,7 @@ extern "C" void actor_guest_test_main(void) {
                      current_radiation, movement_count, ir_signals_received, ir_signals_sent);
         }
         
-        vTaskDelay(pdMS_TO_TICKS(100));
+        vTaskDelay(pdMS_TO_TICKS(16));  // ~60 Hz UI/LED cadence
     }
 }
+

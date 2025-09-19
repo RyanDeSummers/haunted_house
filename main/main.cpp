@@ -7,6 +7,10 @@ extern "C" {
 #include "M5GFX.h"
 #include "SoundManager.hpp"
 #include "actor_guest_test.h"
+#include "health_ui_test.h"
+
+// Uncomment the line below to run Health UI Test instead of main game
+// #define RUN_HEALTH_UI_TEST
 
 M5GFX display;
 led_strip_handle_t led_strip = NULL;
@@ -41,7 +45,13 @@ extern "C" void app_main(void)
         printf("Display initialization failed\n");
     }
     
+#ifdef RUN_HEALTH_UI_TEST
+    // Run the health UI test
+    printf("Starting Health UI Test...\n");
+    health_ui_test_main();
+#else
     // Run the actor/guest test
     printf("Starting Actor/Guest Test...\n");
     actor_guest_test_main();
+#endif
 }

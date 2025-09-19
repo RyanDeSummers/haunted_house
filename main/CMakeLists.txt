@@ -5,6 +5,7 @@ idf_component_register(
         "IR_handler.cpp"        # IR communication handler
         "movement_handler.cpp"   # Movement detection handler
         "actor_guest_test.cpp"   # Actor/Guest IR radiation test
+        "espnow_handler.cpp"     # ESP-NOW communication handler
 
     INCLUDE_DIRS
         "."
@@ -20,6 +21,7 @@ idf_component_register(
         freertos
         driver
         esp_wifi
+        nvs_flash
     )
 
 

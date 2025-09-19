@@ -144,3 +144,6 @@ A multiplayer radiation-themed game for M5Stack Fire devices where players can b
 ---
 
 *This project demonstrates advanced embedded programming concepts including multi-task coordination, hardware abstraction, real-time communication protocols, and user interface design on resource-constrained hardware.*
+
+
+

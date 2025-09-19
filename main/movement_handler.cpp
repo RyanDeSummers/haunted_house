@@ -26,9 +26,15 @@ static const char* TAG = "MOVEMENT_HANDLER";
 #define MPU6886_ACCEL_ZOUT_L 0x40
 
 // Default configuration
-#define DEFAULT_THRESHOLD 0.8f
+#define DEFAULT_THRESHOLD 0.3f  // Lowered for natural movement detection
 #define DEFAULT_SAMPLE_RATE_MS 50
-#define MOVEMENT_COOLDOWN_MS 150
+#define MOVEMENT_COOLDOWN_MS 100  // Reduced cooldown for more responsive detection
+
+// Natural movement detection parameters
+#define MOVEMENT_HISTORY_SIZE 20  // Keep last 20 samples for pattern analysis
+#define WALKING_THRESHOLD 0.15f   // Threshold for walking-like movement
+#define CUMULATIVE_THRESHOLD 2.0f // Total movement needed for radiation reduction
+#define MOVEMENT_DECAY_RATE 0.95f // How quickly cumulative movement decays
 
 // Global state
 static bool g_initialized = false;
@@ -37,6 +43,12 @@ static bool g_accelerometer_working = false;
 static float g_threshold = DEFAULT_THRESHOLD;
 static uint32_t g_sample_rate_ms = DEFAULT_SAMPLE_RATE_MS;
 static TaskHandle_t g_detection_task = nullptr;
+
+// Natural movement detection state
+static float g_movement_history[MOVEMENT_HISTORY_SIZE] = {0};
+static int g_history_index = 0;
+static float g_cumulative_movement = 0.0f;
+static uint32_t g_last_cumulative_reduction = 0;
 
 // Callbacks
 static movement_event_callback_t g_movement_callback = nullptr;
@@ -170,6 +182,47 @@ static uint8_t calculate_reduction_amount(float magnitude) {
     // return 5;
 }
 
+// Detect walking-like rhythmic movement patterns
+static bool detect_walking_pattern() {
+    // Look for alternating high/low values in movement history
+    int peaks = 0;
+    int valleys = 0;
+    
+    for (int i = 1; i < MOVEMENT_HISTORY_SIZE - 1; i++) {
+        float prev = g_movement_history[i - 1];
+        float curr = g_movement_history[i];
+        float next = g_movement_history[i + 1];
+        
+        // Detect peaks (local maxima)
+        if (curr > prev && curr > next && curr > WALKING_THRESHOLD) {
+            peaks++;
+        }
+        // Detect valleys (local minima)
+        if (curr < prev && curr < next && curr < WALKING_THRESHOLD) {
+            valleys++;
+        }
+    }
+    
+    // Walking pattern: alternating peaks and valleys
+    return (peaks >= 2 && valleys >= 2 && abs(peaks - valleys) <= 1);
+}
+
+// Add movement to history and update cumulative tracking
+static void update_movement_tracking(float movement_delta) {
+    // Add to circular buffer
+    g_movement_history[g_history_index] = movement_delta;
+    g_history_index = (g_history_index + 1) % MOVEMENT_HISTORY_SIZE;
+    
+    // Update cumulative movement (with decay)
+    g_cumulative_movement *= MOVEMENT_DECAY_RATE;
+    g_cumulative_movement += movement_delta;
+    
+    // Cap cumulative movement to prevent overflow
+    if (g_cumulative_movement > 10.0f) {
+        g_cumulative_movement = 10.0f;
+    }
+}
+
 static void detection_task_func(void* pvParameters) {
     ESP_LOGI(TAG, "Movement detection task started");
     
@@ -182,20 +235,39 @@ static void detection_task_func(void* pvParameters) {
             
             // Check for movement
             float movement_delta = fabsf(g_current_data.magnitude - g_previous_data.magnitude);
-            bool significant_movement = (movement_delta > g_threshold);
             
-            // Apply cooldown to prevent spam (reduced for more sensitivity)
+            // Update movement tracking for natural movement detection
+            update_movement_tracking(movement_delta);
+            
             uint32_t current_time = esp_timer_get_time() / 1000;
+            bool should_trigger_reduction = false;
+            uint8_t reduction = 1;
+            
+            // Check for immediate strong movement (original behavior)
+            bool significant_movement = (movement_delta > g_threshold);
             if (significant_movement && (current_time - g_last_movement_time > MOVEMENT_COOLDOWN_MS)) {
-                uint8_t reduction = calculate_reduction_amount(movement_delta);
-                
-                ESP_LOGI(TAG, "Movement detected: delta=%.3f, reduction=%d%%", movement_delta, reduction);
-                
+                should_trigger_reduction = true;
+                reduction = calculate_reduction_amount(movement_delta);
+                ESP_LOGI(TAG, "Strong movement detected: delta=%.3f, reduction=%d%%", movement_delta, reduction);
+            }
+            
+            // Check for natural movement patterns (walking, arm swinging)
+            else if (g_cumulative_movement > CUMULATIVE_THRESHOLD && 
+                     detect_walking_pattern() && 
+                     (current_time - g_last_cumulative_reduction > MOVEMENT_COOLDOWN_MS)) {
+                should_trigger_reduction = true;
+                reduction = 2; // Natural movement gives slightly more reduction
+                ESP_LOGI(TAG, "Natural movement detected: cumulative=%.3f, reduction=%d%%", g_cumulative_movement, reduction);
+                g_last_cumulative_reduction = current_time;
+                g_cumulative_movement = 0.0f; // Reset after triggering
+            }
+            
+            // Trigger reduction if any condition met
+            if (should_trigger_reduction) {
                 // Call movement callback if set
                 if (g_movement_callback) {
                     g_movement_callback(true, movement_delta, reduction);
                 }
-                
                 g_last_movement_time = current_time;
             }
             
