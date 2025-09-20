@@ -4,6 +4,7 @@ idf_component_register(
         "SoundManager.cpp"
         "IR_handler.cpp"        # IR communication handler
         "movement_handler.cpp"   # Movement detection handler
+        "motor_handler.cpp"       # Vibration motor handler
         "actor_guest_test.cpp"   # Actor/Guest IR radiation test
         "espnow_handler.cpp"     # ESP-NOW communication handler
 

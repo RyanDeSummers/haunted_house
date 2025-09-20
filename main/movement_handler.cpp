@@ -170,16 +170,8 @@ static float calculate_magnitude(float x, float y, float z) {
 }
 
 static uint8_t calculate_reduction_amount(float magnitude) {
-    // For now, all movements reduce radiation by 1%
-    // TODO: Can be modified later to give different reductions based on movement type
-    return 1;
-    
-    // Future implementation could be:
-    // if (magnitude < 0.5f) return 1;
-    // if (magnitude < 1.0f) return 2;
-    // if (magnitude < 1.5f) return 3;
-    // if (magnitude < 2.0f) return 4;
-    // return 5;
+    // Only give reduction for significant movements (big shakes)
+    return 0; // No reduction for small movements
 }
 
 // Detect walking-like rhythmic movement patterns
@@ -246,9 +238,11 @@ static void detection_task_func(void* pvParameters) {
             // Check for immediate strong movement (original behavior)
             bool significant_movement = (movement_delta > g_threshold);
             if (significant_movement && (current_time - g_last_movement_time > MOVEMENT_COOLDOWN_MS)) {
-                should_trigger_reduction = true;
                 reduction = calculate_reduction_amount(movement_delta);
-                ESP_LOGI(TAG, "Strong movement detected: delta=%.3f, reduction=%d%%", movement_delta, reduction);
+                if (reduction > 0) {
+                    should_trigger_reduction = true;
+                    ESP_LOGI(TAG, "Strong movement detected: delta=%.3f, reduction=%d%%", movement_delta, reduction);
+                }
             }
             
             // Check for natural movement patterns (walking, arm swinging)

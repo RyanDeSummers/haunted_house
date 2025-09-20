@@ -2,6 +2,7 @@
 #include "movement_handler.h"
 #include "IR_handler.h"
 #include "SoundManager.hpp"
+#include "motor_handler.h"
 #include "espnow_handler.h"
 #include "esp_log.h"
 #include "esp_random.h"
@@ -16,10 +17,15 @@
 #include <string>
 #include <cstring>
 #include <cmath>
+#include <cstdio>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
+
+// LED configuration for indoor use
+#define MAX_LED_BRIGHTNESS 80   // Reduced from 255 for indoor use
+#define HALF_LED_BRIGHTNESS (MAX_LED_BRIGHTNESS / 2)
 
 static const char* TAG = "ACTOR_GUEST_TEST";
 
@@ -29,8 +35,26 @@ static uint32_t tone_next_ms = 0;
 static uint8_t  tone_phase   = 0; // for multi-beat patterns
 static uint8_t  last_zone    = 0; // 0=green,1=yellow,2=red
 
-static inline uint8_t radiation_zone(uint8_t r){
-    return (r < 33) ? 0 : (r < 66) ? 1 : 2;
+static constexpr uint16_t CONTAMINATION_PER_LEVEL = 100;
+static constexpr uint16_t MAX_LEVEL_INDEX = 2;
+static constexpr uint16_t MAX_CONTAMINATION = CONTAMINATION_PER_LEVEL * (MAX_LEVEL_INDEX + 1);
+
+static inline uint8_t contamination_level(uint16_t score) {
+    if (score >= CONTAMINATION_PER_LEVEL * 2) return 2;
+    if (score >= CONTAMINATION_PER_LEVEL) return 1;
+    return 0;
+}
+
+static inline uint16_t level_floor(uint8_t level) {
+    return level * CONTAMINATION_PER_LEVEL;
+}
+
+static inline uint16_t level_fill(uint16_t score, uint8_t level) {
+    uint16_t start = level_floor(level);
+    if (score <= start) return 0;
+    uint16_t end = start + CONTAMINATION_PER_LEVEL;
+    if (score >= end) return CONTAMINATION_PER_LEVEL;
+    return score - start;
 }
 
 // External objects from main.cpp
@@ -66,7 +90,7 @@ static void ledfx_tick() {
     // Create pulsing red effect during hit animation
     if (ledfx_hit_phase > 0) {
         // Fast pulsing red (2x the rate of red radiation zone for urgency)
-        uint8_t pulse = (sin(now * 0.012) + 1) * 127; // Fast pulse: 0-255 (2x red zone rate)
+        uint8_t pulse = (sin(now * 0.012) + 1) * HALF_LED_BRIGHTNESS; // Fast pulse: 0-MAX_LED_BRIGHTNESS (2x red zone rate)
         for (int i = 0; i < 10; ++i) {
             led_strip_set_pixel(led_strip, i, pulse, 0, 0);
         }
@@ -81,11 +105,11 @@ static void ledfx_tick() {
     }
 }
 
-// Status tone scheduler - non-blocking modern sounds based on radiation level
-static void status_tone_scheduler(uint8_t rad)
+// Status tone scheduler - non-blocking modern sounds based on contamination level
+static void status_tone_scheduler(uint16_t contamination)
 {
     const uint32_t now = esp_timer_get_time() / 1000;
-    const uint8_t z = radiation_zone(rad);
+    const uint8_t z = contamination_level(contamination);
 
     // Reset pattern when zone changes
     if (z != last_zone) { tone_phase = 0; tone_next_ms = now; last_zone = z; }
@@ -107,7 +131,7 @@ static void status_tone_scheduler(uint8_t rad)
             }
         } break;
 
-        case 2: { // RED: low siren sweep, repeat faster
+        case 2: default: { // RED: low siren sweep, repeat faster
             speaker.playRedSiren();            // one 700ms sweep
             tone_next_ms = now + 900;         // short rest to loop
             tone_phase = 0;
@@ -122,7 +146,7 @@ static void status_tone_scheduler(uint8_t rad)
 #define BUTTON_HOLD_TIME_MS 5000
 
 // Test configuration
-#define RADIATION_PER_SIGNAL 10
+#define RADIATION_PER_SIGNAL 25  // Contamination points delivered per hit
 #define GUEST_COOLDOWN_MS 5000
 #define MIN_RADIATION 1
 #define MAX_RADIATION 20
@@ -136,7 +160,7 @@ typedef enum {
 
 // Test state
 static device_mode_t current_mode = MODE_START_SCREEN;
-static uint8_t current_radiation = 0;
+static uint16_t current_contamination = 0;
 static uint32_t movement_count = 0;
 static uint32_t last_movement_time = 0;
 static uint32_t last_ir_received_time = 0;
@@ -146,42 +170,59 @@ static bool test_running = false;
 static bool buttons_held = false;
 static uint32_t button_hold_start_time = 0;
 static uint8_t self_mac[6] = {0};  // Device's own MAC address
-static uint8_t actor_radiation_amount = RADIATION_PER_SIGNAL;  // Current radiation amount for actor
+static uint8_t actor_radiation_amount = RADIATION_PER_SIGNAL;  // Contamination payload points for actor
 static bool actor_signal_active = false;  // Track if actor is actively sending IR signals
 static uint16_t actor_hit_count = 0;  // Track successful hits on guests
 
 
 // Visual indicator functions
-static void show_radiation_indicator(uint8_t radiation) {
+static void show_radiation_indicator(uint16_t contamination) {
     if (!led_strip) return;
-    // If a hit overlay is active, skip baseline radiation LEDs this frame.
     if (ledfx_is_active() || actorfx_is_active()) return;
-    
+
+    uint8_t level = contamination_level(contamination);
     uint32_t time_ms = esp_timer_get_time() / 1000;
-    
-    if (radiation < 33) {
-        // Green - low radiation (solid)
-        for (int i = 0; i < 10; i++) {
-            led_strip_set_pixel(led_strip, i, 0, 255, 0);
-        }
-        led_strip_refresh(led_strip);
-        
-    } else if (radiation < 66) {
-        // Yellow - medium radiation (slow pulsing like menu)
-        uint8_t pulse = (sin(time_ms * 0.003) + 1) * 127; // Slow pulse: 0-255
-        for (int i = 0; i < 10; i++) {
-            led_strip_set_pixel(led_strip, i, pulse, pulse, 0);
-        }
-        led_strip_refresh(led_strip);
-        
-    } else {
-        // Red - high radiation (fast pulsing, twice the rate of yellow)
-        uint8_t pulse = (sin(time_ms * 0.006) + 1) * 127; // Fast pulse: 0-255 (2x yellow rate)
-        for (int i = 0; i < 10; i++) {
-            led_strip_set_pixel(led_strip, i, pulse, 0, 0);
-        }
-        led_strip_refresh(led_strip);
+
+    double ratio = 0.0;
+    if (CONTAMINATION_PER_LEVEL > 0) {
+        ratio = static_cast<double>(level_fill(contamination, level)) / static_cast<double>(CONTAMINATION_PER_LEVEL);
     }
+
+    double frequency = 0.003;
+    uint8_t base_r = 0;
+    uint8_t base_g = 0;
+    uint8_t base_b = 0;
+
+    switch (level) {
+        case 0:
+            frequency = 0.003;
+            base_g = MAX_LED_BRIGHTNESS;
+            break;
+        case 1:
+            frequency = 0.005;
+            base_r = MAX_LED_BRIGHTNESS;
+            base_g = MAX_LED_BRIGHTNESS;
+            break;
+        default:
+            frequency = 0.008;
+            base_r = MAX_LED_BRIGHTNESS;
+            break;
+    }
+
+    double amplitude = 0.35 + (0.65 * ratio);
+    double wave = (sin(time_ms * frequency) * 0.5) + 0.5;
+    double raw = wave * MAX_LED_BRIGHTNESS * amplitude;
+    if (raw < 0.0) raw = 0.0;
+    if (raw > MAX_LED_BRIGHTNESS) raw = MAX_LED_BRIGHTNESS;
+    uint8_t intensity = static_cast<uint8_t>(raw);
+
+    for (int i = 0; i < 10; ++i) {
+        uint8_t r = static_cast<uint8_t>((base_r * intensity) / MAX_LED_BRIGHTNESS);
+        uint8_t g = static_cast<uint8_t>((base_g * intensity) / MAX_LED_BRIGHTNESS);
+        uint8_t b = static_cast<uint8_t>((base_b * intensity) / MAX_LED_BRIGHTNESS);
+        led_strip_set_pixel(led_strip, i, r, g, b);
+    }
+    led_strip_refresh(led_strip);
 }
 
 static void show_movement_indicator() {
@@ -196,19 +237,19 @@ static void show_mode_indicator() {
     if (current_mode == MODE_START_SCREEN) {
         // Slow pulsing yellow for start screen - light up all LEDs
         uint32_t time_ms = esp_timer_get_time() / 1000;
-        uint8_t pulse = (sin(time_ms * 0.003) + 1) * 127; // Slow pulse: 0-255
+        uint8_t pulse = (sin(time_ms * 0.003) + 1) * HALF_LED_BRIGHTNESS; // Slow pulse: 0-MAX_LED_BRIGHTNESS
         for (int i = 0; i < 10; i++) {
             led_strip_set_pixel(led_strip, i, pulse, pulse, 0);
         }
     } else if (current_mode == MODE_ACTOR) {
         // Purple strobe for actor mode - fast pulsing effect
         uint32_t time_ms = esp_timer_get_time() / 1000;
-        uint8_t strobe = (sin(time_ms * 0.02) + 1) * 127; // Fast strobe: 0-255
+        uint8_t strobe = (sin(time_ms * 0.02) + 1) * HALF_LED_BRIGHTNESS; // Fast strobe: 0-MAX_LED_BRIGHTNESS
         for (int i = 0; i < 10; i++) {
             led_strip_set_pixel(led_strip, i, strobe, 0, strobe);
         }
     }
-    // Guest mode: no constant LED, only radiation-based colors
+    // Guest mode: no constant LED, only contamination-based colors
     led_strip_refresh(led_strip);
 }
 
@@ -244,7 +285,7 @@ static void actorfx_tick() {
 
     switch (actorfx_phase) {
         case 1: // ON #1 (80 ms)
-            for (int i = 0; i < 10; ++i) led_strip_set_pixel(led_strip, i, 0, 255, 0);
+            for (int i = 0; i < 10; ++i) led_strip_set_pixel(led_strip, i, 0, MAX_LED_BRIGHTNESS, 0);
             led_strip_refresh(led_strip);
             actorfx_next_ms = now + 80;
             actorfx_phase   = 2;
@@ -256,7 +297,7 @@ static void actorfx_tick() {
             actorfx_phase   = 3;
             break;
         case 3: // ON #2 (80 ms)
-            for (int i = 0; i < 10; ++i) led_strip_set_pixel(led_strip, i, 0, 255, 0);
+            for (int i = 0; i < 10; ++i) led_strip_set_pixel(led_strip, i, 0, MAX_LED_BRIGHTNESS, 0);
             led_strip_refresh(led_strip);
             actorfx_next_ms = now + 80;
             actorfx_phase   = 4;
@@ -291,6 +332,7 @@ static void espnow_rx_callback(const espnow_packet_t* packet) {
                 ESP_LOGI(TAG, "🎯 Received IR hit acknowledgment from guest! Total hits: %d", actor_hit_count);
                 // DO NOT block / draw LEDs here; defer to main loop
                 actorfx_trigger_hit_confirm();
+                motor_handler_trigger_actor_confirm();
             }
             break;
             
@@ -320,7 +362,7 @@ static void update_display() {
         // Title
         display.setTextSize(3);
         display.setTextColor(TFT_RED, TFT_BLACK);
-        display.drawString("BIOHAZARD", display.width()/2, 100);
+        display.drawString("CONTAINMENT", display.width()/2, 100);
         
         // Subtitle
         display.setTextSize(2);
@@ -376,30 +418,52 @@ static void update_display() {
         display.setTextColor(TFT_WHITE, TFT_BLACK);
         
     } else {
-        // Guest Mode - Clean Design
-        // Title with color-coded radiation level
+        // Guest Mode - contamination meter with tiered bars
+        uint8_t level = contamination_level(current_contamination);
+
         display.setTextSize(2);
-        if (current_radiation < 33) {
-            display.setTextColor(TFT_GREEN, TFT_BLACK);
-        } else if (current_radiation < 66) {
-            display.setTextColor(TFT_YELLOW, TFT_BLACK);
-        } else {
-            display.setTextColor(TFT_RED, TFT_BLACK);
-        }
-        display.drawString("RADIATION LEVEL", display.width()/2, 50);
-        
-        // Radiation bar
-        int bar_width = (current_radiation * (display.width() - 40)) / 100;
-        if (current_radiation < 33) {
-            display.fillRect(20, 80, bar_width, 20, TFT_GREEN);
-        } else if (current_radiation < 66) {
-            display.fillRect(20, 80, bar_width, 20, TFT_YELLOW);
-        } else {
-            display.fillRect(20, 80, bar_width, 20, TFT_RED);
-        }
-        display.drawRect(20, 80, display.width() - 40, 20, TFT_WHITE);
-        
+        uint16_t title_color = (level == 0) ? TFT_GREEN : ((level == 1) ? TFT_YELLOW : TFT_RED);
+        display.setTextColor(title_color, TFT_BLACK);
+        display.drawString("CONTAMINATION", display.width()/2, 40);
+
+        display.setTextSize(1);
         display.setTextColor(TFT_WHITE, TFT_BLACK);
+        const char* state_label = (level == 0) ? "CLEAN STATUS" : ((level == 1) ? "EXPOSED STATUS" : "CRITICAL STATUS");
+        display.drawString(state_label, display.width()/2, 58);
+
+        const uint16_t bar_colors[3] = {TFT_GREEN, TFT_YELLOW, TFT_RED};
+        const char* bar_labels[3] = {"GREEN", "YELLOW", "RED"};
+        const int bar_height = 14;
+        const int bar_spacing = 28;
+        const int bar_x = 50;
+        const int bar_width = display.width() - bar_x - 40;
+
+        for (int i = 0; i <= MAX_LEVEL_INDEX; ++i) {
+            int y = 80 + i * bar_spacing;
+
+            display.setTextColor(bar_colors[i], TFT_BLACK);
+            display.setTextDatum(textdatum_t::middle_right);
+            display.drawString(bar_labels[i], bar_x - 10, y + bar_height / 2);
+
+            display.setTextColor(TFT_WHITE, TFT_BLACK);
+            display.setTextDatum(textdatum_t::top_left);
+            display.drawRect(bar_x, y, bar_width, bar_height, TFT_WHITE);
+
+            uint16_t fill_value = level_fill(current_contamination, static_cast<uint8_t>(i));
+            if (fill_value > 0) {
+                int fill_width = (fill_value * bar_width) / CONTAMINATION_PER_LEVEL;
+                if (fill_width > bar_width) fill_width = bar_width;
+                display.fillRect(bar_x, y, fill_width, bar_height, bar_colors[i]);
+            }
+
+            char buffer[16];
+            snprintf(buffer, sizeof(buffer), "%3u/100", static_cast<unsigned>(fill_value));
+            display.setTextColor(TFT_WHITE, TFT_BLACK);
+            display.setTextDatum(textdatum_t::middle_left);
+            display.drawString(buffer, bar_x + bar_width + 6, y + bar_height / 2);
+        }
+
+        display.setTextDatum(textdatum_t::middle_center);
     }
 }
 
@@ -510,15 +574,21 @@ static void movement_callback(bool significant_movement, float movement_magnitud
         movement_count++;
         last_movement_time = esp_timer_get_time() / 1000;
         
-        // Reduce radiation based on movement
-        if (current_radiation >= reduction_amount) {
-            current_radiation -= reduction_amount;
-        } else {
-            current_radiation = 0;
+        // Reduce contamination based on movement (within current tier)
+        uint8_t level = contamination_level(current_contamination);
+        uint16_t floor_mark = level_floor(level);
+        uint16_t applied = 0;
+        if (current_contamination > floor_mark) {
+            uint16_t available = current_contamination - floor_mark;
+            applied = reduction_amount;
+            if (applied > available) {
+                applied = available;
+            }
+            current_contamination -= applied;
         }
         
-        ESP_LOGI(TAG, "🏃 Movement detected! Magnitude=%.3f, Reduction=%d%%, New radiation=%d%%", 
-                 movement_magnitude, reduction_amount, current_radiation);
+        ESP_LOGI(TAG, "🏃 Movement detected! Magnitude=%.3f, Reduction=%u pts, New contamination=%u", 
+                 movement_magnitude, static_cast<unsigned>(applied), static_cast<unsigned>(current_contamination));
         
         // Visual feedback
         show_movement_indicator();
@@ -556,7 +626,7 @@ static void ir_rx_callback(const ir_packet_t* packet, uint8_t rssi) {
         return;
     }
     
-    // Extract radiation value from packet payload
+    // Extract contamination payload from packet
     uint8_t radiation_to_add = RADIATION_PER_SIGNAL; // Default value
     
     // Try to extract from packet payload if available
@@ -566,29 +636,31 @@ static void ir_rx_callback(const ir_packet_t* packet, uint8_t rssi) {
         
         // Only validate payload length (keep this safety check)
         if (packet->payload_len > 10) {
-            ESP_LOGW(TAG, "⚠️ Suspicious payload length: %d, using default %d%%", packet->payload_len, RADIATION_PER_SIGNAL);
+            ESP_LOGW(TAG, "⚠️ Suspicious payload length: %d, using default %d pts", packet->payload_len, RADIATION_PER_SIGNAL);
             radiation_to_add = RADIATION_PER_SIGNAL;
         }
     } else {
-        ESP_LOGI(TAG, "📦 IR packet has no payload, using default %d%%", radiation_to_add);
+        ESP_LOGI(TAG, "📦 IR packet has no payload, using default %d pts", radiation_to_add);
     }
     
-    // Apply radiation
-    if (current_radiation + radiation_to_add <= 100) {
-        current_radiation += radiation_to_add;
+    // Apply contamination value while respecting tier floors
+    uint32_t updated = static_cast<uint32_t>(current_contamination) + radiation_to_add;
+    if (updated > MAX_CONTAMINATION) {
+        current_contamination = MAX_CONTAMINATION;
     } else {
-        current_radiation = 100;
+        current_contamination = static_cast<uint16_t>(updated);
     }
     
     ir_signals_received++;
     last_ir_received_time = current_time;
     
-    ESP_LOGI(TAG, "📡 IR signal received! Adding %d%% radiation, new total: %d%%", 
-             radiation_to_add, current_radiation);
+    ESP_LOGI(TAG, "📡 IR signal received! Adding %d pts contamination, new total: %u", 
+             radiation_to_add, static_cast<unsigned>(current_contamination));
     
     // IR Hit Effect: play short alarm whoop (own task) + trigger LED flashes
     speaker.hit_alarm_whoop();
     ledfx_trigger_hit();
+    motor_handler_trigger_guest_hit();
     
     // Send ESP-NOW acknowledgment back to actor
     if (espnow_is_initialized()) {
@@ -609,7 +681,7 @@ static void ir_rx_callback(const ir_packet_t* packet, uint8_t rssi) {
     
     // Visual feedback
     update_display();
-    show_radiation_indicator(current_radiation);
+    show_radiation_indicator(current_contamination);
 }
 
 // Actor mode task
@@ -675,6 +747,12 @@ extern "C" void actor_guest_test_main(void) {
         return;
     }
     
+    // Initialize Motor Handler for haptics
+    ESP_LOGI(TAG, "Initializing Motor Handler...");
+    if (!motor_handler_init()) {
+        ESP_LOGW(TAG, "Motor handler init failed; vibration feedback disabled");
+    }
+
     // Initialize movement handler
     ESP_LOGI(TAG, "Initializing Movement Handler...");
     if (!movement_handler_init()) {
@@ -722,7 +800,7 @@ extern "C" void actor_guest_test_main(void) {
     ESP_LOGI(TAG, "✅ ESP-NOW handler initialized and callback set");
     
     test_running = true;
-    current_radiation = 0;
+    current_contamination = 0;
     movement_count = 0;
     last_movement_time = esp_timer_get_time() / 1000;
     last_ir_received_time = 0;
@@ -735,11 +813,11 @@ extern "C" void actor_guest_test_main(void) {
     ESP_LOGI(TAG, "==================================");
     ESP_LOGI(TAG, "1. Device starts in GUEST mode");
     ESP_LOGI(TAG, "2. Hold A+C buttons for 5 seconds to switch to ACTOR mode");
-    ESP_LOGI(TAG, "3. GUEST: Radiation increases by 2%% per second automatically");
-    ESP_LOGI(TAG, "4. GUEST: Receives IR signals and adds radiation");
-    ESP_LOGI(TAG, "5. GUEST: Move device to reduce radiation");
+    ESP_LOGI(TAG, "3. GUEST: Contamination creeps up over time");
+    ESP_LOGI(TAG, "4. GUEST: IR hits add contamination bursts (100-pt tiers)");
+    ESP_LOGI(TAG, "5. GUEST: Subtle movement sheds points (tier floor remains)");
     ESP_LOGI(TAG, "6. ACTOR: Sends IR signals continuously");
-    ESP_LOGI(TAG, "7. ACTOR: Press A to decrease radiation -1%%, C to increase +1%%");
+    ESP_LOGI(TAG, "7. ACTOR: Press A to decrease payload -1 pt, C to increase +1 pt");
     ESP_LOGI(TAG, "8. Guest has 2-second cooldown between IR signals");
     ESP_LOGI(TAG, "");
     
@@ -758,29 +836,29 @@ extern "C" void actor_guest_test_main(void) {
         // Check buttons
         check_buttons();
         
-        // Increase radiation for guest mode (1 point per second) - only in game modes
+        // Increase contamination for guest mode (1 point per second) - only in game modes
         if (current_mode == MODE_GUEST) {
-            static uint32_t last_radiation_tick = 0;
-            if (current_time - last_radiation_tick > 1000) { // Every 1 second
-                if (current_radiation < 100) {
-                    current_radiation += 1; // Increase by 1% every second
-                    ESP_LOGI(TAG, "📈 Guest radiation increased to %d%%", current_radiation);
-                    last_radiation_tick = current_time;
+            static uint32_t last_contamination_tick = 0;
+            if (current_time - last_contamination_tick > 1000) { // Every 1 second
+                if (current_contamination < MAX_CONTAMINATION) {
+                    current_contamination += 1; // Slow background contamination climb
+                    ESP_LOGI(TAG, "📈 Guest contamination increased to %u", static_cast<unsigned>(current_contamination));
+                    last_contamination_tick = current_time;
                     
                     // Update display immediately
                     update_display();
-                    show_radiation_indicator(current_radiation);
+                    show_radiation_indicator(current_contamination);
                 }
             }
             
             // --- Drive the status tones without blocking (green/yellow/red) ---
-            // status_tone_scheduler(current_radiation); // Disabled for now
+            // status_tone_scheduler(current_contamination); // Disabled for now
         }
         
         // Update display every 500ms (skip for start screen and actor mode since they're static)
         if (current_time - last_update > 500 && current_mode == MODE_GUEST) {
             update_display();
-            show_radiation_indicator(current_radiation);
+            show_radiation_indicator(current_contamination);
             last_update = current_time;
         }
         
@@ -789,7 +867,7 @@ extern "C" void actor_guest_test_main(void) {
             show_mode_indicator();
         } else if (current_mode == MODE_GUEST) {
             // Continuous LED updates for smooth pulsing in guest mode
-            show_radiation_indicator(current_radiation);
+            show_radiation_indicator(current_contamination);
         }
         
         // Draw overlays LAST so they can't be overwritten this frame.
@@ -819,9 +897,9 @@ extern "C" void actor_guest_test_main(void) {
         
         // Log status every 10 seconds
         if (current_time % 10000 < 500) {
-            ESP_LOGI(TAG, "📊 Status: Mode=%s, Radiation=%d%%, Movements=%lu, IR_RX=%lu, IR_TX=%lu", 
+            ESP_LOGI(TAG, "📊 Status: Mode=%s, Contamination=%u, Movements=%lu, IR_RX=%lu, IR_TX=%lu", 
                      (current_mode == MODE_ACTOR) ? "ACTOR" : "GUEST",
-                     current_radiation, movement_count, ir_signals_received, ir_signals_sent);
+                     static_cast<unsigned>(current_contamination), movement_count, ir_signals_received, ir_signals_sent);
         }
         
         vTaskDelay(pdMS_TO_TICKS(16));  // ~60 Hz UI/LED cadence
